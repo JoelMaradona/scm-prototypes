@@ -240,7 +240,7 @@
 /* Map */
 .map {
   position: relative;
-  aspect-ratio: 1107 / 507;  /* matches the labeled map asset exactly -> no cropping, pins stay put */
+  aspect-ratio: 4378.13 / 1363.57;  /* world.svg's ratio with height trimmed ~44% total -> object-fit:cover crops poles, no stretch */
   background: #DCEBF6;
   overflow: visible;      /* let click-open vessel cards overflow the map bounds */
   border-radius: 0 0 var(--radius-xl) var(--radius-xl);
@@ -586,14 +586,14 @@
 .pager .page.active { color: var(--cockpit-blue); border-bottom: 2px solid var(--cockpit-blue); }
 
 /* ===== Charts ===== */
-.chart-wrap { display: flex; align-items: center; gap: var(--space-8); padding: var(--space-2) 0; }
-.donut { flex-shrink: 0; }
+.chart-wrap { display: flex; align-items: center; justify-content: center; gap: var(--space-8); padding: var(--space-2) 0; flex-wrap: wrap; }
+.donut { display: block; flex-shrink: 1; width: 200px; max-width: 45%; height: auto; aspect-ratio: 1 / 1; }
 .donut-center { text-align: center; }
 .legend { display: flex; flex-direction: column; gap: var(--space-3); }
 .legend__item { display: flex; align-items: center; gap: var(--space-2); font-size: 13px; color: var(--mds-neutral-text); }
 .legend__swatch { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; }
 
-.bars { width: 100%; }
+.bars { display: block; width: 100%; height: auto; aspect-ratio: 620 / 300; }
 .bars text { font-family: var(--font-text); fill: var(--mds-neutral-weakest-text); }
 .bars .bar { fill: var(--chart-cyan); }
 .bars .grid-line { stroke: var(--mds-neutral-weak-border); stroke-width: 1; }
