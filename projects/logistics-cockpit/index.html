@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<!-- Logistics Cockpit — Shipment overview (Figma frame 6686-73173, built as-is) -->
+<!-- Canonical data: /references/maersk_cockpit_setup.docx + scp-design-reference.md -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Logistics cockpit — SCP</title>
+  <link rel="stylesheet" href="../../shared/tokens.css" />
+  <link rel="stylesheet" href="../../shared/shell.css" />
+  <link rel="stylesheet" href="cockpit.css" />
+</head>
+<body>
+
+  <!-- ===== Platform Header ===== -->
+  <header class="platform-header">
+    <div class="platform-header__logo">
+      <!-- Maersk logo — exact asset from Figma (cyan tile + white 7-point star) -->
+      <svg viewBox="0 0 31 32" aria-label="Maersk" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3.73702 0H27.2613C29.3092 0 30.9984 1.651 30.9984 3.65259V28.3474C30.9984 30.349 29.3092 32 27.2613 32H3.73702C1.68916 32 0 30.349 0 28.3474V3.65259C0.0505444 1.651 1.68916 0 3.73702 0Z" fill="#42B0D5"/>
+        <path d="M20.4525 15.1618L26.5717 7.68127V7.63028L17.7394 11.8343L15.5383 2.47649H15.4861L13.3111 11.8343L4.47888 7.63028V7.68127L10.598 15.1618L1.71525 19.3147V19.3657H11.5698L9.39473 28.7235L15.4861 21.2414L21.6053 28.7235H21.6558L19.4808 19.3657H29.2848L29.3092 19.3147L20.4525 15.1618Z" fill="#fff"/>
+      </svg>
+    </div>
+    <div class="platform-header__title">Supply chain platform</div>
+    <div class="platform-header__actions">
+      <button class="platform-header__btn">Maria Bianchi &#9662;</button>
+    </div>
+  </header>
+
+  <!-- ===== Navigation Rail (Home / Cases / Settings) ===== -->
+  <nav class="nav-rail">
+    <a class="nav-item active" href="#">
+      <span class="nav-item__icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
+      <span class="nav-item__label">Home</span>
+    </a>
+    <a class="nav-item" href="#">
+      <span class="nav-item__icon"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 3h6v3H9z"/><path d="M9 12l2 2 4-4"/></svg></span>
+      <span class="nav-item__label">Cases</span>
+    </a>
+    <a class="nav-item" href="#">
+      <span class="nav-item__icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg></span>
+      <span class="nav-item__label">Settings</span>
+    </a>
+  </nav>
+
+  <!-- ===== Page Header (title + tabs left, actions right) ===== -->
+  <div class="cockpit-header">
+    <div class="cockpit-header__left">
+      <div class="cockpit-header__title">Logistics cockpit</div>
+      <div class="cockpit-tabs">
+        <div class="cockpit-tabs__item active">Shipment overview</div>
+        <div class="cockpit-tabs__item">D&amp;D operations</div>
+        <div class="cockpit-tabs__item">D&amp;D analytics</div>
+      </div>
+    </div>
+    <div class="cockpit-header__right">
+      <button class="btn btn--outlined btn--sm">+ Add dashboard</button>
+      <button class="btn btn--outlined btn--sm">
+        <svg viewBox="0 0 24 24" width="15" height="15" style="stroke:currentColor;fill:none;stroke-width:1.5"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 00-.1-1l2-1.6-2-3.4-2.4 1a7 7 0 00-1.7-1L14.5 2h-4l-.3 2.6a7 7 0 00-1.7 1l-2.4-1-2 3.4 2 1.6a7 7 0 000 2l-2 1.6 2 3.4 2.4-1a7 7 0 001.7 1L10.5 22h4l.3-2.6a7 7 0 001.7-1l2.4 1 2-3.4-2-1.6a7 7 0 00.1-1z"/></svg>
+        Manage dashboard
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== Content ===== -->
+  <main class="cockpit-content">
+    <div class="cockpit-inner">
+
+      <!-- Filters -->
+      <div class="filters">
+        <span class="filters__label">
+          <svg viewBox="0 0 24 24"><path d="M3 5h18M6 12h12M10 19h4"/></svg> Filters
+        </span>
+        <span class="chip">SCHNEIDER ELECTRIC <span class="chip__x">&times;</span></span>
+        <span class="chip">Schneider Electric Asia Pte Ltd <span class="chip__x">&times;</span></span>
+        <span class="chip">Live shipments <span class="chip__x">&times;</span></span>
+      </div>
+
+      <!-- Key metrics -->
+      <section class="card">
+        <div class="card__head">
+          <span class="card__title"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 12l4-2M12 12v-5"/></svg> Key metrics</span>
+          <span class="card__head-spacer"></span>
+          <svg class="card-menu" viewBox="0 0 24 24" aria-label="More options"><path d="M12 7.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 19.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0-6a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
+        </div>
+        <div class="metrics">
+          <div class="metric">
+            <div class="metric__value-row"><span class="metric__value">753</span><span class="delta delta--green">&uarr; 26</span></div>
+            <div class="metric__label">Containers (TEU)</div>
+          </div>
+          <div class="metric">
+            <div class="metric__value-row"><span class="metric__value">3.1</span><span class="delta delta--amber">&uarr; 0.3</span></div>
+            <div class="metric__label">Avg. delay (days)</div>
+          </div>
+          <div class="metric">
+            <div class="metric__value-row"><span class="metric__value">22.5</span><span class="delta delta--amber">&uarr; 1.3</span></div>
+            <div class="metric__label">Avg. lead time (days)</div>
+          </div>
+          <div class="metric">
+            <div class="metric__value-row"><span class="metric__value">4.95M</span><span class="delta delta--green">&uarr; 50K</span></div>
+            <div class="metric__label">Cargo value (USD)</div>
+          </div>
+          <div class="metric">
+            <div class="metric__value-row"><span class="metric__value">188K</span><span class="delta delta--red">&uarr; 6K</span></div>
+            <div class="metric__label">Transport cost (USD)</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Shipments + map -->
+      <section class="card card--flush">
+        <div class="ship-toolbar">
+          <span class="card__title"><svg viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="11" rx="1"/><path d="M3 13h18M8 9V6h8v3"/></svg> Shipments</span>
+          <span class="ship-toolbar__spacer"></span>
+          <div class="segmented">
+            <span class="segmented__item active">All</span>
+            <span class="segmented__item">Disruptions</span>
+            <span class="segmented__item">Delays</span>
+          </div>
+          <button class="pill-btn"><svg viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg> Containers &#9662;</button>
+          <div class="toggle-group">
+            <span class="toggle-group__item active"><svg viewBox="0 0 24 24"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/></svg> Map</span>
+            <span class="toggle-group__item"><svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg> List</span>
+          </div>
+          <svg class="card-menu" viewBox="0 0 24 24" aria-label="More options"><path d="M12 7.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 19.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0-6a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
+        </div>
+
+        <div class="map">
+          <img class="map__img" src="world-map.png" alt="World map" />
+          <div class="map__select"><svg viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5 9-5zM3 13l9 5 9-5M3 17l9 5 9-5"/></svg> 8 out of 8 selected &#9662;</div>
+          <div class="map__search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg> Search for vessel, container, order, SKU and more</div>
+
+          <!-- pins -->
+          <div class="pin" style="left:27.7%;top:32.1%">
+            <div class="pin__badge"><svg viewBox="0 0 24 24"><path d="M11.7 2.086A1 1 0 0112.106 2h2.752a1 1 0 01.525.148L21.642 6H22a1 1 0 011 1v3a1 1 0 01-1 1h-3v10h3v1H2v-1h11V11H7v3h2v1H4v-1h2v-3H2a1 1 0 01-1-1V7a1 1 0 011-1h.894L11.7 2.086zM5.356 6H13V3h-.894l-6.75 3zM14 3v3h5.733l-4.875-3H14zm-1 4H2v3h11V7zm1 3h8V7h-8v3zm0 1v4.162l4 1.6V11h-4zm4 6.838l-4-1.6V21h4v-3.162z"/></svg><span class="pin__count pin__count--amber">13</span></div>
+            <div class="pin__alert">!</div>
+          </div>
+          <div class="pin" style="left:22.9%;top:44.8%">
+            <div class="pin__badge"><svg viewBox="0 0 24 24"><path d="M11 4a1 1 0 00-1 1v9H8V8a1 1 0 00-1-1H6V4.094H5V7h-.831a1 1 0 00-.985.824L2.081 14H2a1 1 0 00-1 1v4H0v1h5c1 0 1.5-.633 1.5-.633S7 20 8 20h3c1 0 1.5-.633 1.5-.633S13 20 14 20h10v-1h-3.874l2.735-4.628a1 1 0 00.139-.509V13a1 1 0 00-1-1h-1V5a1 1 0 00-1-1h-9zm0 10v-4h9v2h-.5a1 1 0 00-.8.4L17.5 14H11zm0-5V5h9v4h-9zm-4 5H3.097L4.17 8H7v6zm11.965 5H14c-1 0-1-1-1-1h-1s0 1-1 1H8c-1 0-1-1-1-1H6s0 1-1 1H2v-4h15.5a1 1 0 00.8-.4l1.2-1.6H22v.863L18.965 19z"/></svg><span class="pin__count pin__count--blue">9</span></div>
+            <!-- Scenario 1: hover card — Magleby Mærsk (on time) -->
+            <div class="vtip">
+              <div class="vtip__caret"></div>
+              <div class="vtip__head">
+                <svg class="vtip__vicon" viewBox="0 0 24 24"><path d="M10 3a1 1 0 011-1h2a1 1 0 011 1v4h3a1 1 0 011 1v5.473l2.594.865a1 1 0 01.564 1.423l-2.793 5.187A2 2 0 0116.604 22H7.396a2 2 0 01-1.761-1.052L2.842 15.76a1 1 0 01.564-1.422L6 13.473V8a1 1 0 011-1h3V3zm1 4h2V3h-2v4zm-4 6.14l4.684-1.562a.999.999 0 01.632 0L17 13.14V8H7v5.14zm5-.613l-8.278 2.76 2.793 5.187a1 1 0 00.88.526h9.209a1 1 0 00.88-.526l2.794-5.188L12 12.527z"/></svg>
+                <span class="vtip__name">Magleby Mærsk</span>
+                <span class="vtip__badge vtip__badge--ontime"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8.5 12l2.4 2.4 4.6-5"/></svg> On time</span>
+              </div>
+              <div class="vtip__grid">
+                <div><div class="vtip__label">Origin</div><div class="vtip__val">Haps, NL</div></div>
+                <div><div class="vtip__label">Destination</div><div class="vtip__val">Shanghai, CN</div></div>
+                <div><div class="vtip__label">Port of loading</div><div class="vtip__val">Rotterdam, NL</div></div>
+                <div><div class="vtip__label">Port of discharge</div><div class="vtip__val">Shanghai, CN</div></div>
+                <div><div class="vtip__label">ATD</div><div class="vtip__val">8 Jan 2026 23:03 CET</div></div>
+                <div><div class="vtip__label">ETA</div><div class="vtip__val">21 Mar 2026</div></div>
+                <div><div class="vtip__label">Containers on board</div><div class="vtip__val">9 <a href="#">View all</a></div></div>
+                <div><div class="vtip__label">Cargo value (USD)</div><div class="vtip__val">128K</div></div>
+              </div>
+              <div class="vtip__divider"></div>
+              <a class="vtip__details" href="#" data-open-drawer="drawer-magleby">View details &rsaquo;</a>
+            </div>
+          </div>
+          <div class="pin" style="left:31.9%;top:46.4%">
+            <div class="pin__badge"><svg viewBox="0 0 24 24"><path d="M11 4a1 1 0 00-1 1v9H8V8a1 1 0 00-1-1H6V4.094H5V7h-.831a1 1 0 00-.985.824L2.081 14H2a1 1 0 00-1 1v4H0v1h5c1 0 1.5-.633 1.5-.633S7 20 8 20h3c1 0 1.5-.633 1.5-.633S13 20 14 20h10v-1h-3.874l2.735-4.628a1 1 0 00.139-.509V13a1 1 0 00-1-1h-1V5a1 1 0 00-1-1h-9zm0 10v-4h9v2h-.5a1 1 0 00-.8.4L17.5 14H11zm0-5V5h9v4h-9zm-4 5H3.097L4.17 8H7v6zm11.965 5H14c-1 0-1-1-1-1h-1s0 1-1 1H8c-1 0-1-1-1-1H6s0 1-1 1H2v-4h15.5a1 1 0 00.8-.4l1.2-1.6H22v.863L18.965 19z"/></svg><span class="pin__count pin__count--blue">2</span></div>
+          </div>
+          <div class="pin" style="left:37.3%;top:47.3%">
+            <div class="pin__badge"><svg viewBox="0 0 24 24"><path d="M11 4a1 1 0 00-1 1v9H8V8a1 1 0 00-1-1H6V4.094H5V7h-.831a1 1 0 00-.985.824L2.081 14H2a1 1 0 00-1 1v4H0v1h5c1 0 1.5-.633 1.5-.633S7 20 8 20h3c1 0 1.5-.633 1.5-.633S13 20 14 20h10v-1h-3.874l2.735-4.628a1 1 0 00.139-.509V13a1 1 0 00-1-1h-1V5a1 1 0 00-1-1h-9zm0 10v-4h9v2h-.5a1 1 0 00-.8.4L17.5 14H11zm0-5V5h9v4h-9zm-4 5H3.097L4.17 8H7v6zm11.965 5H14c-1 0-1-1-1-1h-1s0 1-1 1H8c-1 0-1-1-1-1H6s0 1-1 1H2v-4h15.5a1 1 0 00.8-.4l1.2-1.6H22v.863L18.965 19z"/></svg><span class="pin__count pin__count--red">23</span></div>
+            <div class="pin__alert">!</div>
+            <!-- Scenario 2: hover/click card — MSC Aurora (cargo delayed) -->
+            <div class="vtip">
+              <div class="vtip__caret"></div>
+              <div class="vtip__head">
+                <svg class="vtip__vicon" viewBox="0 0 24 24"><path d="M10 3a1 1 0 011-1h2a1 1 0 011 1v4h3a1 1 0 011 1v5.473l2.594.865a1 1 0 01.564 1.423l-2.793 5.187A2 2 0 0116.604 22H7.396a2 2 0 01-1.761-1.052L2.842 15.76a1 1 0 01.564-1.422L6 13.473V8a1 1 0 011-1h3V3zm1 4h2V3h-2v4zm-4 6.14l4.684-1.562a.999.999 0 01.632 0L17 13.14V8H7v5.14zm5-.613l-8.278 2.76 2.793 5.187a1 1 0 00.88.526h9.209a1 1 0 00.88-.526l2.794-5.188L12 12.527z"/></svg>
+                <span class="vtip__name">MSC Aurora</span>
+                <span class="vtip__badge vtip__badge--delayed"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5M12 16h.01"/></svg> Cargo delayed</span>
+              </div>
+              <div class="vtip__banner vtip__banner--delayed">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5M12 16h.01"/></svg>
+                <span><b>23 containers</b> re-routed through Cape of Good Hope. New ETA <b>+15 days</b> from original plan.</span>
+              </div>
+              <div class="vtip__grid">
+                <div><div class="vtip__label">Origin</div><div class="vtip__val">Haps, NL</div></div>
+                <div><div class="vtip__label">Destination</div><div class="vtip__val">Shanghai, CN</div></div>
+                <div><div class="vtip__label">Port of loading</div><div class="vtip__val">Rotterdam, NL</div></div>
+                <div><div class="vtip__label">Port of discharge</div><div class="vtip__val">Shanghai, CN</div></div>
+                <div><div class="vtip__label">ATD</div><div class="vtip__val">12 Jan 2026 23:00 CET</div></div>
+                <div><div class="vtip__label">ETA</div><div class="vtip__val"><span class="vtip__eta-old">18 Feb 2026</span><br><span class="vtip__eta-new">05 Mar 2026 &middot; +15 days</span></div></div>
+                <div><div class="vtip__label">Cargo value (USD)</div><div class="vtip__val">450k</div></div>
+                <div><div class="vtip__label">Cargo at risk (USD)</div><div class="vtip__val vtip__val--risk">450k</div></div>
+                <div><div class="vtip__label">Containers on board</div><div class="vtip__val">23 <a href="#">View all</a></div></div>
+              </div>
+              <div class="vtip__divider"></div>
+              <a class="vtip__details" href="#">View details &rsaquo;</a>
+            </div>
+          </div>
+          <div class="pin pin--flip" style="left:61.4%;top:53.3%">
+            <div class="pin__badge"><svg viewBox="0 0 24 24"><path d="M11.7 2.086A1 1 0 0112.106 2h2.752a1 1 0 01.525.148L21.642 6H22a1 1 0 011 1v3a1 1 0 01-1 1h-3v10h3v1H2v-1h11V11H7v3h2v1H4v-1h2v-3H2a1 1 0 01-1-1V7a1 1 0 011-1h.894L11.7 2.086zM5.356 6H13V3h-.894l-6.75 3zM14 3v3h5.733l-4.875-3H14zm-1 4H2v3h11V7zm1 3h8V7h-8v3zm0 1v4.162l4 1.6V11h-4zm4 6.838l-4-1.6V21h4v-3.162z"/></svg><span class="pin__count pin__count--red">55</span></div>
+            <div class="pin__alert">!</div>
+            <!-- Port congestion overlay — Shanghai (only Magleby Mærsk links out; other vessels not yet designed) -->
+            <div class="vtip vtip--port">
+              <div class="vtip__caret"></div>
+              <div class="vtip__head">
+                <svg class="vtip__vicon" viewBox="0 0 24 24"><path d="M11.7 2.086A1 1 0 0112.106 2h2.752a1 1 0 01.525.148L21.642 6H22a1 1 0 011 1v3a1 1 0 01-1 1h-3v10h3v1H2v-1h11V11H7v3h2v1H4v-1h2v-3H2a1 1 0 01-1-1V7a1 1 0 011-1h.894L11.7 2.086zM5.356 6H13V3h-.894l-6.75 3zM14 3v3h5.733l-4.875-3H14zm-1 4H2v3h11V7zm1 3h8V7h-8v3zm0 1v4.162l4 1.6V11h-4zm4 6.838l-4-1.6V21h4v-3.162z"/></svg>
+                <span class="vtip__name">Shanghai, China</span>
+                <span class="vtip__badge vtip__badge--delayed"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5M12 16h.01"/></svg> High congestion</span>
+              </div>
+              <div class="vtip__grid">
+                <div><div class="vtip__label">Port / terminal</div><div class="vtip__val" style="font-weight:500">Port of Shanghai</div><div class="vtip__label" style="margin-top:2px">CNSHA</div></div>
+                <div><div class="vtip__label">Avg berth wait</div><div class="vtip__val vtip__val--risk" style="font-weight:500">+4.2 days</div></div>
+                <div><div class="vtip__label">Shipments impacted</div><div class="vtip__val" style="font-weight:500">55</div><div class="vtip__label" style="margin-top:2px">3 vessels</div></div>
+                <div><div class="vtip__label">Expected until</div><div class="vtip__val" style="font-weight:500">3 Feb 2026</div><div class="vtip__label" style="margin-top:2px">Ongoing</div></div>
+              </div>
+              <div class="vtip__divider"></div>
+              <div class="port-section-label">Upcoming vessels at this port</div>
+
+              <div class="port-row">
+                <div><span class="port-row__name">OOCL Hope</span><div class="port-row__sub">OOCE1WE &middot; 14 containers &middot; ETA 28 Feb 2026</div></div>
+                <div class="port-row__days" style="color:var(--scp-red-text)">+10 days <svg viewBox="0 0 24 24"><path d="M9.825 4.62l6.825 5.85a1 1 0 01.35.76v1.54a1 1 0 01-.35.76l-6.825 5.85-.65-.76L16 12.77v-1.54L9.175 5.38l.65-.76z"/></svg></div>
+              </div>
+              <div class="port-row">
+                <div><span class="port-row__name">MSC Aurora</span><div class="port-row__sub">MSC9973 &middot; 23 containers &middot; ETA 5 Mar 2026</div></div>
+                <div class="port-row__days" style="color:var(--scp-red-text)">+15 days <svg viewBox="0 0 24 24"><path d="M9.825 4.62l6.825 5.85a1 1 0 01.35.76v1.54a1 1 0 01-.35.76l-6.825 5.85-.65-.76L16 12.77v-1.54L9.175 5.38l.65-.76z"/></svg></div>
+              </div>
+              <div class="port-row">
+                <div><a href="#" class="port-row__name" data-open-drawer="drawer-magleby">Magleby Mærsk</a><div class="port-row__sub">MAE1122E &middot; 9 containers &middot; ETA 21 Mar 2026</div></div>
+                <div class="port-row__days" style="color:var(--scp-green-text)">+ 0 days <svg viewBox="0 0 24 24"><path d="M9.825 4.62l6.825 5.85a1 1 0 01.35.76v1.54a1 1 0 01-.35.76l-6.825 5.85-.65-.76L16 12.77v-1.54L9.175 5.38l.65-.76z"/></svg></div>
+              </div>
+
+              <div class="vtip__divider"></div>
+              <a class="vtip__details" href="#">View all 55 impacted shipments &rarr;</a>
+            </div>
+          </div>
+          <div class="pin" style="left:63.4%;top:50.7%">
+            <div class="pin__badge"><svg viewBox="0 0 24 24"><path d="M11 4a1 1 0 00-1 1v9H8V8a1 1 0 00-1-1H6V4.094H5V7h-.831a1 1 0 00-.985.824L2.081 14H2a1 1 0 00-1 1v4H0v1h5c1 0 1.5-.633 1.5-.633S7 20 8 20h3c1 0 1.5-.633 1.5-.633S13 20 14 20h10v-1h-3.874l2.735-4.628a1 1 0 00.139-.509V13a1 1 0 00-1-1h-1V5a1 1 0 00-1-1h-9zm0 10v-4h9v2h-.5a1 1 0 00-.8.4L17.5 14H11zm0-5V5h9v4h-9zm-4 5H3.097L4.17 8H7v6zm11.965 5H14c-1 0-1-1-1-1h-1s0 1-1 1H8c-1 0-1-1-1-1H6s0 1-1 1H2v-4h15.5a1 1 0 00.8-.4l1.2-1.6H22v.863L18.965 19z"/></svg><span class="pin__count pin__count--blue">8</span></div>
+          </div>
+          <div class="pin" style="left:56.5%;top:75.3%">
+            <div class="pin__badge"><svg viewBox="0 0 24 24"><path d="M11 4a1 1 0 00-1 1v9H8V8a1 1 0 00-1-1H6V4.094H5V7h-.831a1 1 0 00-.985.824L2.081 14H2a1 1 0 00-1 1v4H0v1h5c1 0 1.5-.633 1.5-.633S7 20 8 20h3c1 0 1.5-.633 1.5-.633S13 20 14 20h10v-1h-3.874l2.735-4.628a1 1 0 00.139-.509V13a1 1 0 00-1-1h-1V5a1 1 0 00-1-1h-9zm0 10v-4h9v2h-.5a1 1 0 00-.8.4L17.5 14H11zm0-5V5h9v4h-9zm-4 5H3.097L4.17 8H7v6zm11.965 5H14c-1 0-1-1-1-1h-1s0 1-1 1H8c-1 0-1-1-1-1H6s0 1-1 1H2v-4h15.5a1 1 0 00.8-.4l1.2-1.6H22v.863L18.965 19z"/></svg><span class="pin__count pin__count--blue">12</span></div>
+          </div>
+          <div class="pin" style="left:47.7%;top:80.9%">
+            <div class="pin__badge"><svg viewBox="0 0 24 24"><path d="M11 4a1 1 0 00-1 1v9H8V8a1 1 0 00-1-1H6V4.094H5V7h-.831a1 1 0 00-.985.824L2.081 14H2a1 1 0 00-1 1v4H0v1h5c1 0 1.5-.633 1.5-.633S7 20 8 20h3c1 0 1.5-.633 1.5-.633S13 20 14 20h10v-1h-3.874l2.735-4.628a1 1 0 00.139-.509V13a1 1 0 00-1-1h-1V5a1 1 0 00-1-1h-9zm0 10v-4h9v2h-.5a1 1 0 00-.8.4L17.5 14H11zm0-5V5h9v4h-9zm-4 5H3.097L4.17 8H7v6zm11.965 5H14c-1 0-1-1-1-1h-1s0 1-1 1H8c-1 0-1-1-1-1H6s0 1-1 1H2v-4h15.5a1 1 0 00.8-.4l1.2-1.6H22v.863L18.965 19z"/></svg><span class="pin__count pin__count--blue">32</span></div>
+          </div>
+          <div class="pin" style="left:30.7%;top:88.2%">
+            <div class="pin__badge"><svg viewBox="0 0 24 24"><path d="M11 4a1 1 0 00-1 1v9H8V8a1 1 0 00-1-1H6V4.094H5V7h-.831a1 1 0 00-.985.824L2.081 14H2a1 1 0 00-1 1v4H0v1h5c1 0 1.5-.633 1.5-.633S7 20 8 20h3c1 0 1.5-.633 1.5-.633S13 20 14 20h10v-1h-3.874l2.735-4.628a1 1 0 00.139-.509V13a1 1 0 00-1-1h-1V5a1 1 0 00-1-1h-9zm0 10v-4h9v2h-.5a1 1 0 00-.8.4L17.5 14H11zm0-5V5h9v4h-9zm-4 5H3.097L4.17 8H7v6zm11.965 5H14c-1 0-1-1-1-1h-1s0 1-1 1H8c-1 0-1-1-1-1H6s0 1-1 1H2v-4h15.5a1 1 0 00.8-.4l1.2-1.6H22v.863L18.965 19z"/></svg><span class="pin__count pin__count--amber">14</span></div>
+            <div class="pin__alert">!</div>
+            <!-- Scenario 3: hover/click card — OOCL Tianjin (at risk) -->
+            <div class="vtip">
+              <div class="vtip__caret"></div>
+              <div class="vtip__head">
+                <svg class="vtip__vicon" viewBox="0 0 24 24"><path d="M10 3a1 1 0 011-1h2a1 1 0 011 1v4h3a1 1 0 011 1v5.473l2.594.865a1 1 0 01.564 1.423l-2.793 5.187A2 2 0 0116.604 22H7.396a2 2 0 01-1.761-1.052L2.842 15.76a1 1 0 01.564-1.422L6 13.473V8a1 1 0 011-1h3V3zm1 4h2V3h-2v4zm-4 6.14l4.684-1.562a.999.999 0 01.632 0L17 13.14V8H7v5.14zm5-.613l-8.278 2.76 2.793 5.187a1 1 0 00.88.526h9.209a1 1 0 00.88-.526l2.794-5.188L12 12.527z"/></svg>
+                <span class="vtip__name">OOCL Tianjin</span>
+                <span class="vtip__badge vtip__badge--risk"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5M12 16h.01"/></svg> At risk</span>
+              </div>
+              <div class="vtip__banner vtip__banner--risk">
+                <svg viewBox="0 0 24 24"><path d="M12 3l9 16H3z"/><path d="M12 9v4M12 16h.01"/></svg>
+                <span><b>14 containers</b> at risk of missing transhipment at Singapore port. ETA <b>+10 days</b> from original plan.</span>
+              </div>
+              <div class="vtip__grid">
+                <div><div class="vtip__label">Origin</div><div class="vtip__val">Haps, NL</div></div>
+                <div><div class="vtip__label">Destination</div><div class="vtip__val">Shanghai, CN</div></div>
+                <div><div class="vtip__label">Port of loading</div><div class="vtip__val">Rotterdam, NL</div></div>
+                <div><div class="vtip__label">Port of discharge</div><div class="vtip__val">Singapore, SG</div></div>
+                <div><div class="vtip__label">ATD</div><div class="vtip__val">12 Jan 2026 23:00 CET</div></div>
+                <div><div class="vtip__label">ETA</div><div class="vtip__val"><span class="vtip__eta-old">18 Feb 2026</span><br><span class="vtip__eta-new">28 Feb 2026 &middot; +10 days</span></div></div>
+                <div><div class="vtip__label">Cargo value (USD)</div><div class="vtip__val">322K</div></div>
+                <div><div class="vtip__label">Cargo at risk (USD)</div><div class="vtip__val vtip__val--risk">322K</div></div>
+                <div><div class="vtip__label">Containers on board</div><div class="vtip__val">14 <a href="#">View all</a></div></div>
+              </div>
+              <div class="vtip__divider"></div>
+              <a class="vtip__details" href="#">View details &rsaquo;</a>
+            </div>
+          </div>
+
+          <div class="map__controls">
+            <button><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+            <button><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button>
+            <button><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Alerts & exceptions -->
+      <section class="card">
+        <div class="card__head">
+          <span class="card__title"><svg viewBox="0 0 24 24"><path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17h.01"/></svg> Alerts &amp; exceptions</span>
+          <span class="tag tag--red">3 critical</span>
+          <span class="tag tag--amber">5 warnings</span>
+          <span class="card__head-spacer"></span>
+          <span class="card__meta"><svg viewBox="0 0 24 24" width="12" height="12" style="stroke:currentColor;fill:none;stroke-width:1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Last updated: 2 mins ago</span>
+          <svg class="card-menu" viewBox="0 0 24 24" aria-label="More options"><path d="M12 7.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 19.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0-6a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
+        </div>
+
+        <div class="alerts">
+          <div class="alert-banner alert-banner--critical">Critical - requires immediate attention</div>
+
+          <div class="alert-row">
+            <div class="alert-row__body">
+              <div class="alert-row__title">Route deviation - MSC Aurora rerouted via Cape of Good Hope</div>
+              <div class="alert-row__desc">Originally scheduled through Suez Canal. Adds est. 15 days to ETA. 23 containers onboard affected.</div>
+              <div class="alert-row__tags">
+                <span class="mini-tag">Route deviation</span>
+                <span class="mini-tag">23 containers</span>
+                <span class="mini-tag">+15 days ETA impact</span>
+                <span class="mini-tag"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> 3 hours ago</span>
+              </div>
+            </div>
+            <div class="alert-row__actions">
+              <button class="btn btn--outlined btn--sm">View details</button>
+              <span class="icon-x">&times;</span>
+            </div>
+          </div>
+
+          <div class="alert-row">
+            <div class="alert-row__body">
+              <div class="alert-row__title">Port congestion at Shanghai - ETA impact on 55 shipments</div>
+              <div class="alert-row__desc">Average berth wait time increased to 4.2 days. Downstream delivery dates for 12 orders at risk. Congestion expected through 3 Feb 2026.</div>
+              <div class="alert-row__tags">
+                <span class="mini-tag">Port congestion</span>
+                <span class="mini-tag">Shanghai</span>
+                <span class="mini-tag">55 shipments</span>
+                <span class="mini-tag"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> 5 hours ago</span>
+              </div>
+            </div>
+            <div class="alert-row__actions">
+              <button class="btn btn--outlined btn--sm">View details</button>
+              <span class="icon-x">&times;</span>
+            </div>
+          </div>
+
+          <div class="alert-banner alert-banner--warning">Warnings - action needed within 48 hours</div>
+
+          <div class="alert-row" style="border-bottom:none">
+            <div class="alert-row__body">
+              <div class="alert-row__title">15 containers at risk of demurrage - free time expires in 2 days</div>
+              <div class="alert-row__desc">Containers at Antwerp and Hamburg approaching free time limit. Based on current D&amp;D rules, charges start 29 Jan 2026.</div>
+              <div class="alert-row__tags">
+                <span class="mini-tag">At risk</span>
+                <span class="mini-tag">Antwerp &middot; Hamburg</span>
+                <span class="mini-tag">2 days remaining</span>
+                <span class="mini-tag"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Updated 1h ago</span>
+              </div>
+            </div>
+            <div class="alert-row__actions">
+              <button class="btn btn--outlined btn--sm">View details</button>
+              <span class="icon-x">&times;</span>
+            </div>
+          </div>
+
+          <a class="link" href="#">View all 8 alerts &rarr;</a>
+        </div>
+      </section>
+
+      <!-- Arrivals / Upcoming arrivals -->
+      <div class="grid-2">
+        <section class="card">
+          <div class="card__head">
+            <span class="card__title"><svg viewBox="0 0 24 24"><path d="M12 3v13m0 0l-4-4m4 4l4-4M5 21h14"/></svg> Arrivals</span>
+            <span class="tag tag--neutral">Rotterdam</span>
+            <span class="card__head-spacer"></span>
+            <svg class="card-menu" viewBox="0 0 24 24" aria-label="More options"><path d="M12 7.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 19.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0-6a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
+          </div>
+          <div class="stat-card__row">
+            <div class="stat"><div class="stat__value-row"><span class="stat__value">142</span><span class="delta delta--green">&uarr; 10</span></div><div class="stat__label">Last 7 days</div></div>
+            <div class="stat"><div class="stat__value-row"><span class="stat__value">65</span><span class="delta delta--neutral">&darr; 6</span></div><div class="stat__label">8-14 days</div></div>
+            <div class="stat"><div class="stat__value-row"><span class="stat__value">7</span></div><div class="stat__label">15+ days</div></div>
+          </div>
+        </section>
+        <section class="card">
+          <div class="card__head">
+            <span class="card__title"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Upcoming arrivals</span>
+            <span class="tag tag--neutral">Rotterdam</span>
+            <span class="card__head-spacer"></span>
+            <svg class="card-menu" viewBox="0 0 24 24" aria-label="More options"><path d="M12 7.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 19.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0-6a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
+          </div>
+          <div class="stat-card__row">
+            <div class="stat"><div class="stat__value-row"><span class="stat__value">306</span><span class="delta delta--green">&uarr; 5</span></div><div class="stat__label">Next 7 days</div></div>
+            <div class="stat"><div class="stat__value-row"><span class="stat__value">126</span></div><div class="stat__label">8-14 days</div></div>
+            <div class="stat"><div class="stat__value-row"><span class="stat__value">38</span><span class="delta delta--amber">&uarr; 11</span></div><div class="stat__label">Delayed by 7+ days</div></div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Departures / Upcoming departures -->
+      <div class="grid-2">
+        <section class="card">
+          <div class="card__head">
+            <span class="card__title"><svg viewBox="0 0 24 24"><path d="M12 21V8m0 0l-4 4m4-4l4 4M5 3h14"/></svg> Departures</span>
+            <span class="tag tag--neutral">Antwerp</span>
+            <span class="card__head-spacer"></span>
+            <svg class="card-menu" viewBox="0 0 24 24" aria-label="More options"><path d="M12 7.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 19.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0-6a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
+          </div>
+          <div class="stat-card__row">
+            <div class="stat"><div class="stat__value-row"><span class="stat__value">61</span></div><div class="stat__label">Last 7 days</div></div>
+            <div class="stat"><div class="stat__value-row"><span class="stat__value">153</span></div><div class="stat__label">8-14 days</div></div>
+            <div class="stat"><div class="stat__value-row"><span class="stat__value">122</span><span class="delta delta--neutral">&uarr; 9</span></div><div class="stat__label">15+ days</div></div>
+          </div>
+        </section>
+        <section class="card">
+          <div class="card__head">
+            <span class="card__title"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Upcoming departures</span>
+            <span class="tag tag--neutral">Antwerp</span>
+            <span class="card__head-spacer"></span>
+            <svg class="card-menu" viewBox="0 0 24 24" aria-label="More options"><path d="M12 7.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 19.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0-6a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
+          </div>
+          <div class="stat-card__row">
+            <div class="stat"><div class="stat__value-row"><span class="stat__value">144</span></div><div class="stat__label">Next 7 days</div></div>
+            <div class="stat"><div class="stat__value-row"><span class="stat__value">92</span><span class="delta delta--neutral">&darr; 2</span></div><div class="stat__label">8-14 days</div></div>
+            <div class="stat"><div class="stat__value-row"><span class="stat__value">39</span></div><div class="stat__label">15+ days</div></div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Late arrivals / departures tables -->
+      <div class="grid-2">
+        <section class="card">
+          <div class="card__head">
+            <span class="card__title"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg> Late arrivals at POD</span>
+            <span class="card__head-spacer"></span>
+            <svg class="card-menu" viewBox="0 0 24 24" aria-label="More options"><path d="M12 7.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 19.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0-6a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
+          </div>
+          <table class="tbl">
+            <thead><tr>
+              <th><span class="sort">Port <svg viewBox="0 0 24 24"><path d="M8 9l4-4 4 4M8 15l4 4 4-4"/></svg></span></th>
+              <th><span class="sort">Shipments with delays <svg viewBox="0 0 24 24"><path d="M12 5v14M8 15l4 4 4-4"/></svg></span></th>
+              <th><span class="sort">Avg. delay <svg viewBox="0 0 24 24"><path d="M8 9l4-4 4 4M8 15l4 4 4-4"/></svg></span></th>
+            </tr></thead>
+            <tbody>
+              <tr><td>Long Beach, United States</td><td><a href="#">32</a></td><td>18 hours</td></tr>
+              <tr><td>Ningbo-Zhoushan, China</td><td><a href="#">29</a></td><td>3 days</td></tr>
+              <tr><td>Hamburg, Germany</td><td><a href="#">16</a></td><td>5 hours</td></tr>
+              <tr><td>Kaohsiung, Taiwan</td><td><a href="#">17</a></td><td>36 hours</td></tr>
+              <tr><td>Savannah, United States</td><td><a href="#">13</a></td><td>5 days</td></tr>
+              <tr><td>Rotterdam, Netherlands</td><td><a href="#">10</a></td><td>41 hours</td></tr>
+              <tr><td>Hong Kong, Hong Kong</td><td><a href="#">9</a></td><td>3 hours</td></tr>
+              <tr><td>Tanjung Pelepas, Malaysia</td><td><a href="#">9</a></td><td>6 days</td></tr>
+            </tbody>
+          </table>
+          <div class="pager"><button>&lsaquo;</button><span class="page active">1</span><span class="page">2</span><button>&rsaquo;</button></div>
+        </section>
+
+        <section class="card">
+          <div class="card__head">
+            <span class="card__title"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg> Late departures from POL</span>
+            <span class="card__head-spacer"></span>
+            <svg class="card-menu" viewBox="0 0 24 24" aria-label="More options"><path d="M12 7.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 19.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0-6a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
+          </div>
+          <table class="tbl">
+            <thead><tr>
+              <th><span class="sort">Port <svg viewBox="0 0 24 24"><path d="M8 9l4-4 4 4M8 15l4 4 4-4"/></svg></span></th>
+              <th><span class="sort">Shipments with delays <svg viewBox="0 0 24 24"><path d="M12 5v14M8 15l4 4 4-4"/></svg></span></th>
+              <th><span class="sort">Avg. delay <svg viewBox="0 0 24 24"><path d="M8 9l4-4 4 4M8 15l4 4 4-4"/></svg></span></th>
+            </tr></thead>
+            <tbody>
+              <tr><td>Rotterdam, Netherlands</td><td><a href="#">44</a></td><td>11 hours</td></tr>
+              <tr><td>Antwerp, Belgium</td><td><a href="#">38</a></td><td>2 days</td></tr>
+              <tr><td>Hamburg, Germany</td><td><a href="#">37</a></td><td>7 hours</td></tr>
+              <tr><td>Gioia Tauro, Italy</td><td><a href="#">31</a></td><td>25 hours</td></tr>
+              <tr><td>Valencia, Spain</td><td><a href="#">30</a></td><td>6 days</td></tr>
+              <tr><td>Algeciras, Spain</td><td><a href="#">25</a></td><td>1 week</td></tr>
+              <tr><td>Bremerhaven, Germany</td><td><a href="#">21</a></td><td>3 days</td></tr>
+              <tr><td>Felixstowe, United Kingdom</td><td><a href="#">18</a></td><td>23 hours</td></tr>
+            </tbody>
+          </table>
+          <div class="pager"><button>&lsaquo;</button><span class="page active">1</span><span class="page">2</span><button>&rsaquo;</button></div>
+        </section>
+      </div>
+
+      <!-- Charts row: donut + node bars -->
+      <div class="grid-2">
+        <section class="card">
+          <div class="card__head">
+            <span class="card__title"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7a5 5 0 015 5"/></svg> Order value by status</span>
+            <span class="card__head-spacer"></span>
+            <svg class="card-menu" viewBox="0 0 24 24" aria-label="More options"><path d="M12 7.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 19.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0-6a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
+          </div>
+          <div class="chart-wrap">
+            <svg class="donut" width="200" height="200" viewBox="0 0 200 200">
+              <g transform="rotate(-90 100 100)" fill="none" stroke-width="34">
+                <circle cx="100" cy="100" r="80" pathLength="100" stroke="#42B0D5" stroke-dasharray="30 100" stroke-dashoffset="0"/>
+                <circle cx="100" cy="100" r="80" pathLength="100" stroke="#1C86B8" stroke-dasharray="18 100" stroke-dashoffset="-30"/>
+                <circle cx="100" cy="100" r="80" pathLength="100" stroke="#00243D" stroke-dasharray="18 100" stroke-dashoffset="-48"/>
+                <circle cx="100" cy="100" r="80" pathLength="100" stroke="#9FD4E8" stroke-dasharray="12 100" stroke-dashoffset="-66"/>
+                <circle cx="100" cy="100" r="80" pathLength="100" stroke="#CDE9F4" stroke-dasharray="10 100" stroke-dashoffset="-78"/>
+                <circle cx="100" cy="100" r="80" pathLength="100" stroke="#353535" stroke-dasharray="12 100" stroke-dashoffset="-88"/>
+              </g>
+              <text x="100" y="98" text-anchor="middle" font-family="Maersk Headline, Arial" font-size="30" fill="#141414">88.7M</text>
+              <text x="100" y="118" text-anchor="middle" font-family="Maersk Text, Arial" font-size="12" fill="#6A6A6A">Total value (USD)</text>
+            </svg>
+            <div class="legend">
+              <div class="legend__item"><span class="legend__swatch" style="background:#42B0D5"></span> Booked</div>
+              <div class="legend__item"><span class="legend__swatch" style="background:#00243D"></span> At CFS</div>
+              <div class="legend__item"><span class="legend__swatch" style="background:#1C86B8"></span> Origin transit</div>
+              <div class="legend__item"><span class="legend__swatch" style="background:#9FD4E8"></span> On ocean</div>
+              <div class="legend__item"><span class="legend__swatch" style="background:#CDE9F4"></span> In port</div>
+              <div class="legend__item"><span class="legend__swatch" style="background:#353535"></span> Being delivered</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card__head">
+            <span class="card__title"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7a5 5 0 015 5"/></svg> Order value by node</span>
+            <span class="card__head-spacer"></span>
+            <svg class="card-menu" viewBox="0 0 24 24" aria-label="More options"><path d="M12 7.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 19.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0-6a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
+          </div>
+          <svg class="bars" viewBox="0 0 620 300" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <g id="ic-port" stroke="#6A6A6A" stroke-width="1.4" fill="none"><path d="M2 15h16M4 15V8l6-3 6 3v7M8 15v-4h4v4"/></g>
+              <g id="ic-ship" stroke="#6A6A6A" stroke-width="1.4" fill="none"><path d="M2 12l1.5 5h13L18 12M2 12l8-2 8 2M4 12V8h12v4M10 10V4"/></g>
+            </defs>
+            <text x="14" y="150" transform="rotate(-90 14 150)" text-anchor="middle" class="axis-lbl">Order value (1,000 USD)</text>
+            <!-- gridlines + y labels -->
+            <line class="grid-line" x1="48" y1="30" x2="612" y2="30"/><text x="42" y="34" text-anchor="end" class="axis-lbl">600</text>
+            <line class="grid-line" x1="48" y1="100" x2="612" y2="100"/><text x="42" y="104" text-anchor="end" class="axis-lbl">400</text>
+            <line class="grid-line" x1="48" y1="170" x2="612" y2="170"/><text x="42" y="174" text-anchor="end" class="axis-lbl">200</text>
+            <line class="grid-line" x1="48" y1="240" x2="612" y2="240"/><text x="42" y="244" text-anchor="end" class="axis-lbl">0</text>
+            <!-- bars (scale: 240 baseline, 210px = 600) -->
+            <rect class="bar" x="72"  y="51"  width="52" height="189"/>
+            <rect class="bar" x="162" y="76"  width="52" height="164"/>
+            <rect class="bar" x="252" y="107" width="52" height="133"/>
+            <rect class="bar" x="342" y="194" width="52" height="46"/>
+            <rect class="bar" x="432" y="198" width="52" height="42"/>
+            <rect class="bar" x="522" y="217" width="52" height="23"/>
+            <!-- icons + labels -->
+            <use href="#ic-port" x="88"  y="250"/><text x="98"  y="284" text-anchor="middle" class="axis-lbl">Rotterdam</text>
+            <use href="#ic-port" x="178" y="250"/><text x="188" y="284" text-anchor="middle" class="axis-lbl">Miami</text>
+            <use href="#ic-ship" x="268" y="250"/><text x="278" y="284" text-anchor="middle" class="axis-lbl">Magleby Maersk</text>
+            <use href="#ic-port" x="358" y="250"/><text x="368" y="284" text-anchor="middle" class="axis-lbl">Paris</text>
+            <use href="#ic-ship" x="448" y="250"/><text x="458" y="284" text-anchor="middle" class="axis-lbl">MSC Irina</text>
+            <use href="#ic-ship" x="538" y="250"/><text x="548" y="284" text-anchor="middle" class="axis-lbl">Ever Apex</text>
+            <text x="330" y="300" text-anchor="middle" class="axis-lbl">Node (location/vessel)</text>
+          </svg>
+        </section>
+      </div>
+
+      <!-- Transport costs per country (left half) -->
+      <div class="grid-2">
+        <section class="card">
+          <div class="card__head">
+            <span class="card__title"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7a5 5 0 015 5"/></svg> Transport costs per country</span>
+            <span class="card__head-spacer"></span>
+            <svg class="card-menu" viewBox="0 0 24 24" aria-label="More options"><path d="M12 7.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 19.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0-6a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
+          </div>
+          <svg class="bars" viewBox="0 0 620 300" preserveAspectRatio="xMidYMid meet">
+            <text x="14" y="150" transform="rotate(-90 14 150)" text-anchor="middle" class="axis-lbl">Transport cost (1,000 USD)</text>
+            <line class="grid-line" x1="48" y1="30" x2="612" y2="30"/><text x="42" y="34" text-anchor="end" class="axis-lbl">600</text>
+            <line class="grid-line" x1="48" y1="100" x2="612" y2="100"/><text x="42" y="104" text-anchor="end" class="axis-lbl">400</text>
+            <line class="grid-line" x1="48" y1="170" x2="612" y2="170"/><text x="42" y="174" text-anchor="end" class="axis-lbl">200</text>
+            <line class="grid-line" x1="48" y1="240" x2="612" y2="240"/><text x="42" y="244" text-anchor="end" class="axis-lbl">0</text>
+            <rect class="bar" x="72"  y="51"  width="52" height="189"/>
+            <rect class="bar" x="162" y="124" width="52" height="116"/>
+            <rect class="bar" x="252" y="138" width="52" height="102"/>
+            <rect class="bar" x="342" y="145" width="52" height="95"/>
+            <rect class="bar" x="432" y="149" width="52" height="91"/>
+            <rect class="bar" x="522" y="181" width="52" height="59"/>
+            <text x="98"  y="258" text-anchor="middle" class="axis-lbl">China</text>
+            <text x="188" y="258" text-anchor="middle" class="axis-lbl">Indonesia</text>
+            <text x="278" y="258" text-anchor="middle" class="axis-lbl">Netherlands</text>
+            <text x="368" y="258" text-anchor="middle" class="axis-lbl">Portugal</text>
+            <text x="458" y="258" text-anchor="middle" class="axis-lbl">India</text>
+            <text x="548" y="258" text-anchor="middle" class="axis-lbl">United States</text>
+            <text x="330" y="290" text-anchor="middle" class="axis-lbl">Country</text>
+          </svg>
+        </section>
+        <div></div>
+      </div>
+
+      <button class="add-widget"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> Add widget</button>
+
+    </div>
+  </main>
+
+  <!-- Scenario 1: vessel drawer — Magleby Mærsk (On time) -->
+  <div class="drawer-scrim" id="drawer-magleby">
+    <div class="drawer">
+      <div class="drawer__header">
+        <div class="drawer__titles">
+          <div class="drawer__name-row">
+            <span class="drawer__name">Magleby Mærsk</span>
+            <span class="vtip__badge vtip__badge--ontime"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8.5 12l2.4 2.4 4.6-5"/></svg> On time</span>
+          </div>
+          <div class="drawer__sub">IMO 9619957 &middot; 9 containers</div>
+        </div>
+        <svg class="drawer__close" data-close-drawer viewBox="0 0 24 24"><path d="M11.293 12L4.646 5.354l.708-.707L12 11.293l6.646-6.646.708.707L12.707 12l6.647 6.646-.707.708L12 12.707l-6.646 6.647-.708-.707L11.293 12z"/></svg>
+      </div>
+
+      <div class="drawer__body">
+        <div class="drawer__tabs">
+          <div class="drawer__tab active" data-panel="magleby-overview">Overview</div>
+          <div class="drawer__tab" data-panel="magleby-recommended">Recommended actions</div>
+        </div>
+
+        <div class="drawer__panel" id="magleby-overview">
+          <div class="drawer__info">
+            <div class="drawer__info-row">
+              <div><div class="vtip__label">Origin</div><div class="vtip__val">Haps, NL</div></div>
+              <div><div class="vtip__label">Destination</div><div class="vtip__val">Shanghai, CN</div></div>
+              <div><div class="vtip__label">Port of loading</div><div class="vtip__val">Rotterdam, NL</div></div>
+              <div><div class="vtip__label">Port of discharge</div><div class="vtip__val">Shanghai, CN</div></div>
+            </div>
+            <div class="drawer__info-row">
+              <div><div class="vtip__label">ATD</div><div class="vtip__val">8 Jan 2026 23:03 CET</div></div>
+              <div><div class="vtip__label">ETA</div><div class="vtip__val">21 Mar 2026</div></div>
+              <div><div class="vtip__label">Cargo value (USD)</div><div class="vtip__val">128K</div></div>
+              <div></div>
+            </div>
+          </div>
+
+          <div class="drawer__section-title">
+            <span class="drawer__section-icon"><svg viewBox="0 0 24 24"><path d="M3 3a1 1 0 011-1h11a1 1 0 011 1v8h7a1 1 0 011 1v9H0v-9a1 1 0 011-1h2V3zm1 8h11V3H4v8zm2-2V5h1v4H6zm3 0V5h1v4H9zm3 0V5h1v4h-1zm-.5 3H1v8h10.5v-8zm1 0v8H23v-8H12.5zM4 14v4H3v-4h1zm3 0v4H6v-4h1zm3 0v4H9v-4h1zm5 0v4h-1v-4h1zm3 0v4h-1v-4h1zm3 0v4h-1v-4h1z"/></svg></span>
+            <span>Shipments</span>
+          </div>
+
+          <div class="drawer__search">
+            <div class="drawer__search-field"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg> Search</div>
+          </div>
+
+          <table class="tbl">
+            <thead><tr><th>Shipment ID</th><th>Type</th><th>Status</th><th>Orders</th><th>SKUs</th></tr></thead>
+            <tbody>
+              <tr><td><a href="#" data-open-drawer="drawer-container-maeu7765069">MAEU 7765069</a></td><td>40 high</td><td><span class="tag tag--neutral" style="background:var(--scp-green-bg);color:var(--scp-green-text)">On time</span></td><td><a href="#" data-open-drawer="drawer-order-maeu7765069">23</a></td><td><a href="#">379</a></td></tr>
+              <tr><td><a href="#">COSU 4055609</a></td><td>20 dry</td><td><span class="tag" style="background:var(--scp-green-bg);color:var(--scp-green-text)">On time</span></td><td><a href="#">17</a></td><td><a href="#">112</a></td></tr>
+              <tr><td><a href="#">MAEU 9722005</a></td><td>40 dry</td><td><span class="tag" style="background:var(--scp-green-bg);color:var(--scp-green-text)">On time</span></td><td><a href="#">24</a></td><td><a href="#">98</a></td></tr>
+              <tr><td><a href="#">SUDU 2539505</a></td><td>40 dry</td><td><span class="tag" style="background:var(--scp-green-bg);color:var(--scp-green-text)">On time</span></td><td><a href="#">27</a></td><td><a href="#">365</a></td></tr>
+              <tr><td><a href="#">MSKU 4676853</a></td><td>20 dry</td><td><span class="tag" style="background:var(--scp-green-bg);color:var(--scp-green-text)">On time</span></td><td><a href="#">43</a></td><td><a href="#">899</a></td></tr>
+              <tr><td><a href="#">MAEU 3095269</a></td><td>20 dry</td><td><span class="tag" style="background:var(--scp-green-bg);color:var(--scp-green-text)">On time</span></td><td><a href="#">14</a></td><td><a href="#">214</a></td></tr>
+              <tr><td><a href="#">COSU 2621828</a></td><td>20 dry</td><td><span class="tag" style="background:var(--scp-green-bg);color:var(--scp-green-text)">On time</span></td><td><a href="#">7</a></td><td><a href="#">556</a></td></tr>
+              <tr><td><a href="#">SUDU 6875577</a></td><td>40 high</td><td><span class="tag" style="background:var(--scp-green-bg);color:var(--scp-green-text)">On time</span></td><td><a href="#">37</a></td><td><a href="#">26</a></td></tr>
+              <tr><td><a href="#">MSKU 3002649</a></td><td>40 high</td><td><span class="tag" style="background:var(--scp-green-bg);color:var(--scp-green-text)">On time</span></td><td><a href="#">52</a></td><td><a href="#">66</a></td></tr>
+            </tbody>
+          </table>
+
+          <div class="drawer__pager">
+            <svg viewBox="0 0 24 24" style="opacity:.4"><path d="M14.175 19.38L7.35 13.53a1 1 0 01-.35-.76v-1.54a1 1 0 01.35-.76l6.825-5.85.65.76L8 11.23v1.54l6.825 5.85-.65.76z"/></svg>
+            <span class="page">1</span>
+            <svg viewBox="0 0 24 24"><path d="M9.825 4.62l6.825 5.85a1 1 0 01.35.76v1.54a1 1 0 01-.35.76l-6.825 5.85-.65-.76L16 12.77v-1.54L9.175 5.38l.65-.76z"/></svg>
+          </div>
+        </div>
+
+        <div class="drawer__panel" id="magleby-recommended" style="display:none">
+          <div class="drawer__empty">
+            <div class="drawer__empty-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8.5 12l2.4 2.4 4.6-5"/></svg></div>
+            <div class="drawer__empty-title">No actions needed right now</div>
+            <div class="drawer__empty-sub">All 9 containers on this vessel are on track. Recommended actions will appear here if a disruption, delay, or risk is detected.</div>
+          </div>
+          <div class="drawer__help">
+            <div class="drawer__help-title">Need Help?</div>
+            <div class="drawer__help-sub">Contact our customer service team for personalized assistance with your logistics needs.</div>
+            <button class="btn btn--outlined btn--sm">Contact support &#8599;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SKU details — order SCHNEID4578120345699 (only this one order's SKU link is wired) -->
+  <div class="drawer-scrim" id="drawer-skus-schneid4578120345699">
+    <div class="drawer">
+      <div class="drawer__header drawer--narrow-header">
+        <div class="drawer__titles">
+          <div class="drawer__name-row">
+            <svg class="drawer__back" data-close-drawer viewBox="0 0 24 24"><path d="M5.336 10.477l4.332-3.85.664.747L6 11.224v.276h13v1H6v.275l4.332 3.851-.664.748-4.332-3.851A1 1 0 015 12.775v-1.55a1 1 0 01.336-.748z"/></svg>
+            <span class="drawer__name">Order - SCHNEID4578120345699</span>
+          </div>
+        </div>
+        <svg class="drawer__close" data-close-drawer viewBox="0 0 24 24"><path d="M11.293 12L4.646 5.354l.708-.707L12 11.293l6.646-6.646.708.707L12.707 12l6.647 6.646-.707.708L12 12.707l-6.646 6.647-.708-.707L11.293 12z"/></svg>
+      </div>
+
+      <div class="drawer__body">
+        <div class="drawer__toolbar">
+          <div class="drawer__search-field drawer__search-field--wide"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg> Search SKUs, description</div>
+          <div class="drawer__download"><svg viewBox="0 0 24 24"><path d="M12 3v13m0 0l-4-4m4 4l4-4M5 21h14"/></svg> Download</div>
+        </div>
+
+        <table class="tbl">
+          <thead><tr><th>SKU</th><th>Description</th><th>Quantity</th><th>Weight</th></tr></thead>
+          <tbody>
+            <tr><td>981569124</td><td>Acti9 iC60H - Miniature Circuit Breaker protection</td><td>12 cartons</td><td>4556</td></tr>
+            <tr><td>981569125</td><td>PowerPact H - Molded Case Circuit Breaker for industrial</td><td>15 cartons</td><td>4556</td></tr>
+            <tr><td>981569126</td><td>Harmony XB5 - Pushbutton switch with illuminated option</td><td>20 cartons</td><td>4556</td></tr>
+            <tr><td>981569127</td><td>TeSys D - Circuit breaker adjustable thermal protection</td><td>25 cartons</td><td>4556</td></tr>
+            <tr><td>981569128</td><td>Altivar 320 - Variable speed drive for asynchronous motors</td><td>30 cartons</td><td>4556</td></tr>
+            <tr><td>981569129</td><td>SmartLink PM - Power monitoring device</td><td>5 cartons</td><td>4556</td></tr>
+            <tr><td>981569130</td><td>Zelio Relay - Modular control relay</td><td>8 cartons</td><td>4556</td></tr>
+            <tr><td>981569131</td><td>Square D QO - Plug-on circuit breaker for residential panels</td><td>18 cartons</td><td>4556</td></tr>
+          </tbody>
+        </table>
+
+        <div class="drawer__pager">
+          <svg viewBox="0 0 24 24" style="opacity:.4"><path d="M14.175 19.38L7.35 13.53a1 1 0 01-.35-.76v-1.54a1 1 0 01.35-.76l6.825-5.85.65.76L8 11.23v1.54l6.825 5.85-.65.76z"/></svg>
+          <span class="page">1</span>
+          <span class="page" style="color:var(--mds-neutral-weak-text);border-bottom:none">2</span>
+          <svg viewBox="0 0 24 24"><path d="M9.825 4.62l6.825 5.85a1 1 0 01.35.76v1.54a1 1 0 01-.35.76l-6.825 5.85-.65-.76L16 12.77v-1.54L9.175 5.38l.65-.76z"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Order details — 23 orders on MAEU 7765069 (only the first row's SKU count opens the SKU drawer) -->
+  <div class="drawer-scrim" id="drawer-order-maeu7765069">
+    <div class="drawer">
+      <div class="drawer__header drawer--narrow-header">
+        <div class="drawer__titles">
+          <div class="drawer__name-row">
+            <svg class="drawer__back" data-close-drawer viewBox="0 0 24 24"><path d="M5.336 10.477l4.332-3.85.664.747L6 11.224v.276h13v1H6v.275l4.332 3.851-.664.748-4.332-3.851A1 1 0 015 12.775v-1.55a1 1 0 01.336-.748z"/></svg>
+            <span class="drawer__name">MAEU 7765069</span>
+            <span class="vtip__badge vtip__badge--ontime"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8.5 12l2.4 2.4 4.6-5"/></svg> On time</span>
+          </div>
+          <div class="drawer__sub">40 high</div>
+        </div>
+        <svg class="drawer__close" data-close-drawer viewBox="0 0 24 24"><path d="M11.293 12L4.646 5.354l.708-.707L12 11.293l6.646-6.646.708.707L12.707 12l6.647 6.646-.707.708L12 12.707l-6.646 6.647-.708-.707L11.293 12z"/></svg>
+      </div>
+
+      <div class="drawer__body">
+        <div class="drawer__toolbar">
+          <div class="drawer__search-field drawer__search-field--wide"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg> Search order</div>
+          <div class="drawer__download"><svg viewBox="0 0 24 24"><path d="M12 3v13m0 0l-4-4m4 4l4-4M5 21h14"/></svg> Download</div>
+        </div>
+
+        <table class="tbl">
+          <thead><tr><th>Order #</th><th>SKUs</th><th>Consignee</th><th>Shipper</th><th>Quantity</th></tr></thead>
+          <tbody>
+            <tr><td>SCHNEID4578120345699</td><td><a href="#" data-open-drawer="drawer-skus-schneid4578120345699">67</a></td><td>SCHNEIDER ELECTRIC</td><td>Schneider Electric Asia Pte Ltd</td><td>6 cartons</td></tr>
+            <tr><td>SELMX3284917203465</td><td><a href="#">54</a></td><td>SCHNEIDER ELECTRIC</td><td>Schneider Electric Asia Pte Ltd</td><td>6 cartons</td></tr>
+            <tr><td>SCHDLE8472309456123</td><td><a href="#">56</a></td><td>SCHNEIDER ELECTRIC</td><td>Schneider Electric Asia Pte Ltd</td><td>6 cartons</td></tr>
+            <tr><td>SNDRC4598721304567</td><td><a href="#">12</a></td><td>SCHNEIDER ELECTRIC</td><td>Schneider Electric Asia Pte Ltd</td><td>6 cartons</td></tr>
+            <tr><td>SCHELX7520491837654</td><td><a href="#">12</a></td><td>SCHNEIDER ELECTRIC</td><td>Schneider Electric Asia Pte Ltd</td><td>6 cartons</td></tr>
+            <tr><td>SELEC4983172065487</td><td><a href="#">38</a></td><td>SCHNEIDER ELECTRIC</td><td>Schneider Electric Asia Pte Ltd</td><td>6 cartons</td></tr>
+            <tr><td>SCHNDR7591032846578</td><td><a href="#">33</a></td><td>SCHNEIDER ELECTRIC</td><td>Schneider Electric Asia Pte Ltd</td><td>6 cartons</td></tr>
+            <tr><td>SCHNEI8642095731248</td><td><a href="#">48</a></td><td>SCHNEIDER ELECTRIC</td><td>Schneider Electric Asia Pte Ltd</td><td>6 cartons</td></tr>
+          </tbody>
+        </table>
+
+        <div class="drawer__pager">
+          <svg viewBox="0 0 24 24" style="opacity:.4"><path d="M14.175 19.38L7.35 13.53a1 1 0 01-.35-.76v-1.54a1 1 0 01.35-.76l6.825-5.85.65.76L8 11.23v1.54l6.825 5.85-.65.76z"/></svg>
+          <span class="page">1</span>
+          <svg viewBox="0 0 24 24"><path d="M9.825 4.62l6.825 5.85a1 1 0 01.35.76v1.54a1 1 0 01-.35.76l-6.825 5.85-.65-.76L16 12.77v-1.54L9.175 5.38l.65-.76z"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Container milestone timeline — MAEU 7765069 (On time) -->
+  <div class="drawer-scrim" id="drawer-container-maeu7765069">
+    <div class="drawer">
+      <div class="drawer__header drawer--narrow-header">
+        <div class="drawer__titles">
+          <div class="drawer__name-row">
+            <svg class="drawer__back" data-close-drawer viewBox="0 0 24 24"><path d="M5.336 10.477l4.332-3.85.664.747L6 11.224v.276h13v1H6v.275l4.332 3.851-.664.748-4.332-3.851A1 1 0 015 12.775v-1.55a1 1 0 01.336-.748z"/></svg>
+            <span class="drawer__name">MAEU 7765069</span>
+            <span class="vtip__badge vtip__badge--ontime"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8.5 12l2.4 2.4 4.6-5"/></svg> On time</span>
+          </div>
+          <div class="drawer__sub">40 high</div>
+        </div>
+        <svg class="drawer__close" data-close-drawer viewBox="0 0 24 24"><path d="M11.293 12L4.646 5.354l.708-.707L12 11.293l6.646-6.646.708.707L12.707 12l6.647 6.646-.707.708L12 12.707l-6.646 6.647-.708-.707L11.293 12z"/></svg>
+      </div>
+
+      <div class="drawer__body">
+        <div class="ms">
+          <div class="ms__section"><div class="ms__section-loc">Empty dispatch</div><div class="ms__section-addr">Haps, Netherlands</div></div>
+          <div class="ms__row">
+            <div class="ms__time"><div class="ms__date">6 Jan 2026</div><div class="ms__clock">07:30 CET</div></div>
+            <div class="ms__spine"><div class="ms__line ms__line--solid"></div><div class="ms__dot ms__dot--done"></div></div>
+            <div><div class="ms__event"><svg viewBox="0 0 24 24"><path d="M2 6a1 1 0 011-1h15v1H3v12h15v1H3a1 1 0 01-1-1V6zm20 5.234l-2.82-2.35.64-.768 2.82 2.35a1 1 0 01.36.768v1.532a1 1 0 01-.36.768l-2.82 2.35-.64-.768 2.82-2.35V12.5h-7v-1h7v-.266zM6 15V9h1v6H6zm4 0V9h1v6h-1z"/></svg><span class="ms__label">Dispatched</span></div><div class="ms__sub">DHL &middot; CONT-NL-558934</div></div>
+          </div>
+
+          <div class="ms__section" style="display:flex;align-items:center;justify-content:space-between">
+            <div><div class="ms__section-loc">Port of loading</div><div class="ms__section-addr">Rotterdam World Gateway, Rotterdam, NL</div></div>
+            <span class="ms__etd-chip">ETD at gate-in: 16 Jan 2026</span>
+          </div>
+          <div class="ms__row">
+            <div class="ms__time"><div class="ms__date">8 Jan 2026</div><div class="ms__clock">14:22 CET</div></div>
+            <div class="ms__spine"><div class="ms__line ms__line--solid"></div><div class="ms__dot ms__dot--done"></div></div>
+            <div class="ms__event"><svg viewBox="0 0 24 24"><path d="M21 21h-1V3h1v18zm-4-9.775l-4.332-3.851.664-.748 4.332 3.851a1 1 0 01.336.748v1.55a1 1 0 01-.336.748l-4.332 3.85-.664-.747L17 12.776V12.5H3v-1h14v-.275z"/></svg><span class="ms__label">Gate-in</span></div>
+          </div>
+          <div class="ms__row">
+            <div class="ms__time"><div class="ms__date">12 Jan 2026</div><div class="ms__clock">23:00 CST</div></div>
+            <div class="ms__spine"><div class="ms__line ms__line--solid"></div><div class="ms__dot ms__dot--done"></div></div>
+            <div><div class="ms__event"><svg viewBox="0 0 24 24"><path d="M11 4a1 1 0 00-1 1v9H8V8a1 1 0 00-1-1H6V4.094H5V7h-.831a1 1 0 00-.985.824L2.081 14H2a1 1 0 00-1 1v4H0v1h5c1 0 1.5-.633 1.5-.633S7 20 8 20h3c1 0 1.5-.633 1.5-.633S13 20 14 20h10v-1h-3.874l2.735-4.628a1 1 0 00.139-.509V13a1 1 0 00-1-1h-1V5a1 1 0 00-1-1h-9zm0 10v-4h9v2h-.5a1 1 0 00-.8.4L17.5 14H11zm0-5V5h9v4h-9zm-4 5H3.097L4.17 8H7v6zm11.965 5H14c-1 0-1-1-1-1h-1s0 1-1 1H8c-1 0-1-1-1-1H6s0 1-1 1H2v-4h15.5a1 1 0 00.8-.4l1.2-1.6H22v.863L18.965 19z"/></svg><span class="ms__label">Departed</span></div><div class="ms__sub">Magleby Mærsk &middot; MAE1122E</div></div>
+          </div>
+
+          <div class="ms__section"><div class="ms__section-loc">Port of discharge</div><div class="ms__section-addr">Shanghai Yangshan Port, Shanghai, CN</div></div>
+          <div class="ms__row ms__row--future">
+            <div class="ms__time"><div class="ms__date">21 Mar 2026</div><div class="ms__clock">08:00 CST</div></div>
+            <div class="ms__spine"><div class="ms__line ms__line--dashed"></div><div class="ms__dot ms__dot--future"></div></div>
+            <div><div class="ms__event"><svg viewBox="0 0 24 24"><path d="M11 4a1 1 0 00-1 1v9H8V8a1 1 0 00-1-1H6V4.094H5V7h-.831a1 1 0 00-.985.824L2.081 14H2a1 1 0 00-1 1v4H0v1h5c1 0 1.5-.633 1.5-.633S7 20 8 20h3c1 0 1.5-.633 1.5-.633S13 20 14 20h10v-1h-3.874l2.735-4.628a1 1 0 00.139-.509V13a1 1 0 00-1-1h-1V5a1 1 0 00-1-1h-9zm0 10v-4h9v2h-.5a1 1 0 00-.8.4L17.5 14H11zm0-5V5h9v4h-9zm-4 5H3.097L4.17 8H7v6zm11.965 5H14c-1 0-1-1-1-1h-1s0 1-1 1H8c-1 0-1-1-1-1H6s0 1-1 1H2v-4h15.5a1 1 0 00.8-.4l1.2-1.6H22v.863L18.965 19z"/></svg><span class="ms__label">Arrival Est.</span></div><div class="ms__sub">Magleby Mærsk &middot; MAE1122E</div></div>
+          </div>
+          <div class="ms__row ms__row--future">
+            <div class="ms__time"><div class="ms__date">8 Mar 2026</div><div class="ms__clock">14:00 CST</div></div>
+            <div class="ms__spine"><div class="ms__line ms__line--dashed"></div><div class="ms__dot ms__dot--future"></div></div>
+            <div><div class="ms__label-row"><span class="ms__event"><svg viewBox="0 0 24 24"><path d="M23 13h-5v1.797A2.749 2.749 0 0120.202 17H23v-4zM5.5 15.75a1.75 1.75 0 100 3.5 1.75 1.75 0 000-3.5zm12 0a1.75 1.75 0 100 3.5 1.75 1.75 0 000-3.5zM20.754 8H18v4h5v-1.08L20.754 8zM1 6v11h1.798a2.749 2.749 0 015.404 0h6.596A2.749 2.749 0 0117 14.797V6H1zm17 1h2.754c.31 0 .604.145.793.39l2.246 2.92a1 1 0 01.207.61V17a1 1 0 01-1 1h-2.798a2.749 2.749 0 01-5.404 0H8.202a2.749 2.749 0 01-5.404 0H1a1 1 0 01-1-1V6a1 1 0 011-1h16a1 1 0 011 1v1z"/></svg><span class="ms__label">Departure</span></span><span class="ms__planned-tag">planned</span></div><div class="ms__sub">COSCO Logistics &middot; CONT-SH-002341</div></div>
+          </div>
+
+          <div class="ms__section"><div class="ms__section-loc">Delivery</div><div class="ms__section-addr">Danone Nutricia warehouse, Shanghai, CN</div></div>
+          <div class="ms__row ms__row--future">
+            <div class="ms__time"><div class="ms__date">9 Mar 2026</div><div class="ms__clock">10:00 CST</div></div>
+            <div class="ms__spine"><div class="ms__line ms__line--dashed"></div><div class="ms__dot ms__dot--future"></div></div>
+            <div class="ms__label-row"><span class="ms__event"><svg viewBox="0 0 24 24"><path d="M3 3a1 1 0 011-1h13.293a1 1 0 01.707.293L20.707 5a1 1 0 01.293.707V21a1 1 0 01-1 1H4a1 1 0 01-1-1V3zm4 0H4v18h2v-8a1 1 0 011-1h10a1 1 0 011 1v8h2V5.707L17.293 3H17v4a1 1 0 01-1 1H8a1 1 0 01-1-1V3zm1 0v4h8V3H8zm9 18v-8H7v8h10z"/></svg><span class="ms__label">Delivery</span></span><span class="ms__planned-tag">planned</span></div>
+          </div>
+
+          <div class="ms__section"><div class="ms__section-loc">Empty return</div><div class="ms__section-addr">Yangshan Port Container Depot, Shanghai, CN</div></div>
+          <div class="ms__row ms__row--future">
+            <div class="ms__time"></div>
+            <div class="ms__spine"><div class="ms__dot ms__dot--future"></div></div>
+            <div class="ms__label-row"><span class="ms__event"><svg viewBox="0 0 24 24"><path d="M2 6a1 1 0 011-1h15v1H3v12h15v1H3a1 1 0 01-1-1V6zm12.36 4.466l2.82-2.35.64.768-2.82 2.35v.266h8v1h-8v.266l2.82 2.35-.64.768-2.82-2.35a1 1 0 01-.36-.768v-1.532a1 1 0 01.36-.768zM6 15V9h1v6H6zm4 0V9h1v6h-1z"/></svg><span class="ms__label">Returned</span></span><span class="ms__planned-tag">planned</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../shared/shell.js"></script>
+  <script>
+    // local tab + segmented + toggle switching (shared shell.js only knows .tab-bar / .nav-item)
+    document.querySelectorAll('.cockpit-tabs__item, .segmented__item, .toggle-group__item').forEach(el => {
+      el.addEventListener('click', () => {
+        el.parentElement.querySelectorAll('.active').forEach(s => s.classList.remove('active'));
+        el.classList.add('active');
+      });
+    });
+
+    // Map pins: click opens the vessel card as an overlay; click outside closes it.
+    document.querySelectorAll('.map .pin').forEach(pin => {
+      if (!pin.querySelector('.vtip')) return;
+      pin.addEventListener('click', e => {
+        e.stopPropagation();
+        const wasOpen = pin.classList.contains('open');
+        document.querySelectorAll('.pin.open').forEach(p => p.classList.remove('open'));
+        if (!wasOpen) pin.classList.add('open');
+      });
+      pin.querySelector('.vtip').addEventListener('click', e => e.stopPropagation());
+    });
+    document.addEventListener('click', () => {
+      document.querySelectorAll('.pin.open').forEach(p => p.classList.remove('open'));
+    });
+
+    // Drawer tabs (Overview / Recommended actions): swap the matching panel
+    document.querySelectorAll('.drawer__tabs').forEach(tabs => {
+      tabs.querySelectorAll('.drawer__tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          tabs.querySelectorAll('.drawer__tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          const body = tabs.closest('.drawer__body');
+          body.querySelectorAll('.drawer__panel').forEach(p => p.style.display = 'none');
+          const panel = document.getElementById(tab.dataset.panel);
+          if (panel) panel.style.display = '';
+        });
+      });
+    });
+
+    // Vessel drawer: "View details" opens it; scrim click or X closes it.
+    // z-index rises each open so a drawer opened from within another (order -> SKU, vessel -> container)
+    // always renders on top, regardless of where its markup sits in the document.
+    let drawerZ = 200;
+    document.querySelectorAll('[data-open-drawer]').forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault(); e.stopPropagation();
+        const scrim = document.getElementById(link.dataset.openDrawer);
+        if (scrim) { scrim.style.zIndex = ++drawerZ; scrim.classList.add('open'); }
+      });
+    });
+    document.querySelectorAll('.drawer-scrim').forEach(scrim => {
+      scrim.addEventListener('click', e => { if (e.target === scrim) scrim.classList.remove('open'); });
+      scrim.querySelector('[data-close-drawer]')?.addEventListener('click', () => scrim.classList.remove('open'));
+    });
+  </script>
+</body>
+</html>

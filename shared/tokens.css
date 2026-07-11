@@ -1,0 +1,115 @@
+/* SCP Design Tokens — extracted from MDS + SCP page recipes */
+/* Shared across all prototype projects */
+
+:root {
+  /* === Shell colours === */
+  --scp-platform-header-bg: #00243D;
+  --scp-nav-bg: #353535;
+  --scp-nav-width: 80px;
+  --scp-platform-header-height: 60px;
+
+  /* === MDS Neutral === */
+  --mds-neutral-bg: #FFFFFF;
+  --mds-neutral-text: #141414;
+  --mds-neutral-border: #D4D4D4;
+  --mds-neutral-weakest-text: #6A6A6A;
+  --mds-neutral-weakest-bg: #F7F7F7;
+  --mds-neutral-weak-text: #4C4C4C;
+  --mds-neutral-weak-bg: #F0F0F0;
+  --mds-neutral-weak-border: #E2E2E2;
+  --mds-neutral-strong-bg: #E2E2E2;
+  --mds-neutral-inverse-bg: #141414;
+  --mds-neutral-inverse-text: #FFFFFF;
+
+  /* === MDS Brand / Secondary === */
+  --mds-secondary-weak-bg: #E2F3F9;
+  --mds-secondary-bg: #42B0D5;
+  --mds-link-color: #0077B2;
+
+  /* === Semantic colours (Cockpit) === */
+  --scp-red-text: #A32D2D;
+  --scp-red-bg: #FCEBEB;
+  --scp-amber-text: #854F0B;
+  --scp-amber-bg: #FAEEDA;
+  --scp-green-text: #3B6D11;
+  --scp-green-bg: #EAF3DE;
+  --scp-blue-text: #185FA5;
+  --scp-blue-bg: #E6F1FB;
+  --scp-purple-text: #534AB7;
+  --scp-purple-bg: #EEEDFE;
+  --scp-teal-text: #0F6E56;
+  --scp-teal-bg: #E1F5EE;
+
+  /* === Borders === */
+  --scp-header-divider: #DBDBDB;
+
+  /* === Corner radius === */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-full: 9999px;
+
+  /* === Spacing (4px grid) === */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 28px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* === Typography === */
+  --font-headline: 'Maersk Headline', Arial, sans-serif;
+  --font-text: 'Maersk Text', Arial, sans-serif;
+}
+
+/* === Maersk brand fonts (maeu) — real files from @maersk-global/fonts === */
+@font-face {
+  font-family: 'Maersk Headline';
+  src: url('fonts/MaerskHeadline-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Maersk Headline';
+  src: url('fonts/MaerskHeadline-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Maersk Text';
+  src: url('fonts/MaerskText-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Maersk Text';
+  src: url('fonts/MaerskText-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Maersk Text';
+  src: url('fonts/MaerskText-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Maersk Text';
+  src: url('fonts/MaerskText-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
