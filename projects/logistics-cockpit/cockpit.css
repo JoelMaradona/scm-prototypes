@@ -103,7 +103,7 @@
   font-size: 14px;
   color: var(--mds-neutral-text);
 }
-.filters__label svg { width: 18px; height: 18px; stroke: var(--mds-neutral-text); fill: none; stroke-width: 1.6; }
+.filters__label svg { width: 18px; height: 18px; fill: var(--mds-neutral-text); stroke: none; }
 .chip {
   display: inline-flex;
   align-items: center;
@@ -116,7 +116,8 @@
   line-height: 18px;
   white-space: nowrap;
 }
-.chip__x { cursor: pointer; opacity: 0.75; font-size: 13px; }
+.chip__x { display: inline-flex; cursor: pointer; opacity: 0.75; }
+.chip__x svg { width: 14px; height: 14px; fill: currentColor; stroke: none; }
 .chip__x:hover { opacity: 1; }
 
 /* ===== Card ===== */
@@ -418,7 +419,8 @@
 .drawer__sub { font-size: 14px; line-height: 20px; color: #878787; margin-top: 2px; }
 .drawer__close { width: 24px; height: 24px; fill: var(--mds-neutral-text); cursor: pointer; flex-shrink: 0; margin-top: 2px; }
 .drawer__close:hover { opacity: 0.6; }
-.drawer__body { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: var(--space-4); }
+.drawer__body { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: var(--space-6); }
+.drawer__panel { display: flex; flex-direction: column; gap: var(--space-6); }
 
 .drawer__tabs { display: flex; border-bottom: 1px solid var(--mds-neutral-weak-border); }
 .drawer__tab { position: relative; padding: 10px var(--space-4); font-size: 14px; color: var(--mds-neutral-text); cursor: pointer; }
@@ -437,7 +439,6 @@
 .drawer__section-icon svg { width: 20px; height: 20px; fill: var(--cockpit-blue); }
 .drawer__section-title span { font-family: var(--font-text); font-weight: 500; font-size: 16px; color: var(--mds-neutral-text); }
 
-.drawer__search { display: flex; justify-content: flex-end; }
 .drawer__search-field {
   display: flex; align-items: center; gap: var(--space-2); width: 200px;
   border: 1px solid var(--mds-neutral-border); border-radius: var(--radius-md);
