@@ -142,6 +142,7 @@
   color: var(--mds-neutral-text);
 }
 .card__title svg { width: 20px; height: 20px; stroke: var(--mds-neutral-text); fill: none; stroke-width: 1.5; }
+.icon-fill { fill: currentColor !important; stroke: none !important; }
 .card__head-spacer { flex: 1; }
 .card__meta {
   display: inline-flex;
