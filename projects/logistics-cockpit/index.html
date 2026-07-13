@@ -68,14 +68,17 @@
 
       <!-- Filters -->
       <div class="filters">
-        <span class="filters__label">
+        <span class="filters__label" data-open-drawer="drawer-filters" style="cursor:pointer">
           <svg viewBox="0 0 20 20"><path d="M7.5 3C6.67157 3 6 3.67157 6 4.5C6 5.32843 6.67157 6 7.5 6C8.32843 6 9 5.32843 9 4.5C9 3.67157 8.32843 3 7.5 3ZM5.05001 4C5.28164 2.85888 6.29052 2 7.5 2C8.70948 2 9.71836 2.85888 9.94999 4H18V5H9.94999C9.71836 6.14112 8.70948 7 7.5 7C6.29052 7 5.28164 6.14112 5.05001 5H2V4H5.05001ZM13.5 8.5C12.6716 8.5 12 9.17157 12 10C12 10.8284 12.6716 11.5 13.5 11.5C14.3284 11.5 15 10.8284 15 10C15 9.17157 14.3284 8.5 13.5 8.5ZM11.05 9.5C11.2816 8.35888 12.2905 7.5 13.5 7.5C14.7095 7.5 15.7184 8.35888 15.95 9.5H18V10.5H15.95C15.7184 11.6411 14.7095 12.5 13.5 12.5C12.2905 12.5 11.2816 11.6411 11.05 10.5H2V9.5H11.05ZM7.5 14C6.67157 14 6 14.6716 6 15.5C6 16.3284 6.67157 17 7.5 17C8.32843 17 9 16.3284 9 15.5C9 14.6716 8.32843 14 7.5 14ZM5.05001 15C5.28164 13.8589 6.29052 13 7.5 13C8.70948 13 9.71836 13.8589 9.94999 15H18V16H9.94999C9.71836 17.1411 8.70948 18 7.5 18C6.29052 18 5.28164 17.1411 5.05001 16H2V15H5.05001Z"/></svg> Filters
         </span>
         <span class="chip">SCHNEIDER ELECTRIC <span class="chip__x"><svg viewBox="0 0 20 20"><path d="M4.64648 5.35359L9.29293 10L4.64648 14.6465L5.35359 15.3536L10 10.7071L14.6465 15.3536L15.3536 14.6465L10.7071 10L15.3536 5.35359L14.6465 4.64648L10 9.29293L5.35359 4.64648L4.64648 5.35359Z"/></svg></span></span>
         <span class="chip">Schneider Electric Asia Pte Ltd <span class="chip__x"><svg viewBox="0 0 20 20"><path d="M4.64648 5.35359L9.29293 10L4.64648 14.6465L5.35359 15.3536L10 10.7071L14.6465 15.3536L15.3536 14.6465L10.7071 10L15.3536 5.35359L14.6465 4.64648L10 9.29293L5.35359 4.64648L4.64648 5.35359Z"/></svg></span></span>
         <span class="chip">Live shipments <span class="chip__x"><svg viewBox="0 0 20 20"><path d="M4.64648 5.35359L9.29293 10L4.64648 14.6465L5.35359 15.3536L10 10.7071L14.6465 15.3536L15.3536 14.6465L10.7071 10L15.3536 5.35359L14.6465 4.64648L10 9.29293L5.35359 4.64648L4.64648 5.35359Z"/></svg></span></span>
+        <span class="ship-toolbar__spacer"></span>
+        <button id="filters-export" class="pill-btn" style="display:none">Export <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
       </div>
 
+      <div id="panel-overview" class="tab-panel active">
       <!-- Key metrics -->
       <section class="card">
         <div class="card__head">
@@ -119,8 +122,8 @@
           </div>
           <button class="pill-btn"><svg viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg> Containers &#9662;</button>
           <div class="toggle-group">
-            <span class="toggle-group__item active"><svg viewBox="0 0 24 24"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/></svg> Map</span>
-            <span class="toggle-group__item"><svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg> List</span>
+            <span class="toggle-group__item active" data-view="map"><svg viewBox="0 0 24 24"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/></svg> Map</span>
+            <span class="toggle-group__item" data-view="list"><svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg> List</span>
           </div>
           <svg class="card-menu" viewBox="0 0 24 24" aria-label="More options"><path d="M12 7.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 19.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0-6a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
         </div>
@@ -273,6 +276,47 @@
             <button><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
             <button><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button>
             <button><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></button>
+          </div>
+        </div>
+
+        <div class="list-view">
+          <table class="tbl">
+            <thead>
+              <tr>
+                <th>Container ID</th><th>Type</th><th>Order</th><th>SKUs</th><th>Bill of lading</th>
+                <th>Group number</th><th>Last event</th><th>Port of loading</th><th>Port of discharge</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><a href="#">0SBK0002379207</a></td><td>40 high</td><td><a href="#">4500503393</a></td><td><a href="#">E4894BATT</a></td><td>BOL-CX9F-773201</td><td>1004403410</td><td><span class="tag tag--neutral">Departed</span> <span style="color:var(--mds-neutral-weakest-text);font-size:12px">2 days ago</span></td><td>Sines, Portugal</td><td>Shanghai, China</td></tr>
+              <tr><td><a href="#">0SBK0002416402</a></td><td>20 dry</td><td><a href="#">4500353221</a></td><td><a href="#">Multiple (6)</a></td><td>SHP-89A2-112034</td><td>1004403666</td><td><span class="tag tag--neutral">Arrived</span> <span style="color:var(--mds-neutral-weakest-text);font-size:12px">2 hours ago</span></td><td>Ningbo, China</td><td>Rotterdam, NL</td></tr>
+              <tr><td><a href="#">0022277341</a></td><td>40 dry</td><td><a href="#">4500601843</a></td><td><a href="#">Multiple (23)</a></td><td>DLX-BL-5548A239</td><td>1004403406</td><td><span class="tag tag--neutral">Import customs cleared</span> <span style="color:var(--mds-neutral-weakest-text);font-size:12px">1 hour ago</span></td><td>Mumbai, India</td><td>Rotterdam, NL</td></tr>
+              <tr><td><a href="#">0032257554</a></td><td>40 high</td><td><a href="#">4500353629</a></td><td><a href="#">WEM4398R</a></td><td>BL-2026-CPH-004512</td><td>1004403407</td><td><span class="tag tag--neutral">Gate-in</span> <span style="color:var(--mds-neutral-weakest-text);font-size:12px">36 minutes ago</span></td><td>Port Klang, Malaysia</td><td>Haps, NL</td></tr>
+              <tr><td><a href="#">0SBK0002379207</a></td><td>40 high</td><td><a href="#">4500503393</a></td><td><a href="#">E4894BATT</a></td><td>BOL-CX9F-773201</td><td>1004403410</td><td><span class="tag tag--neutral">Discharged</span> <span style="color:var(--mds-neutral-weakest-text);font-size:12px">16 hours ago</span></td><td>Sines, Portugal</td><td>Shanghai, China</td></tr>
+              <tr><td><a href="#">0SBK0002416402</a></td><td>20 dry</td><td><a href="#">4500353221</a></td><td><a href="#">Multiple (6)</a></td><td>SHP-89A2-112034</td><td>1004403666</td><td><span class="tag tag--neutral">Returned</span> <span style="color:var(--mds-neutral-weakest-text);font-size:12px">1 week ago</span></td><td>Ningbo, China</td><td>Rotterdam, NL</td></tr>
+              <tr><td><a href="#">0022277341</a></td><td>40 dry</td><td><a href="#">4500601843</a></td><td><a href="#">Multiple (23)</a></td><td>DLX-BL-5548A239</td><td>1004403406</td><td><span class="tag tag--neutral">Departed</span> <span style="color:var(--mds-neutral-weakest-text);font-size:12px">2 days ago</span></td><td>Mumbai, India</td><td>Rotterdam, NL</td></tr>
+              <tr><td><a href="#">0032257554</a></td><td>40 high</td><td><a href="#">4500353629</a></td><td><a href="#">WEM4398R</a></td><td>BL-2026-CPH-004512</td><td>1004403407</td><td><span class="tag tag--neutral">Arrived</span> <span style="color:var(--mds-neutral-weakest-text);font-size:12px">2 hours ago</span></td><td>Port Klang, Malaysia</td><td>Haps, NL</td></tr>
+              <tr><td><a href="#">0SBK0002379207</a></td><td>40 high</td><td><a href="#">4500503393</a></td><td><a href="#">E4894BATT</a></td><td>BOL-CX9F-773201</td><td>1004403410</td><td><span class="tag tag--neutral">Import customs cleared</span> <span style="color:var(--mds-neutral-weakest-text);font-size:12px">1 hour ago</span></td><td>Sines, Portugal</td><td>Shanghai, China</td></tr>
+              <tr><td><a href="#">0SBK0002416402</a></td><td>20 dry</td><td><a href="#">4500353221</a></td><td><a href="#">Multiple (6)</a></td><td>SHP-89A2-112034</td><td>1004403666</td><td><span class="tag tag--neutral">Gate-in</span> <span style="color:var(--mds-neutral-weakest-text);font-size:12px">36 minutes ago</span></td><td>Ningbo, China</td><td>Rotterdam, NL</td></tr>
+              <tr><td><a href="#">0022277341</a></td><td>40 dry</td><td><a href="#">4500601843</a></td><td><a href="#">Multiple (23)</a></td><td>DLX-BL-5548A239</td><td>1004403406</td><td><span class="tag tag--neutral">Discharged</span> <span style="color:var(--mds-neutral-weakest-text);font-size:12px">16 hours ago</span></td><td>Mumbai, India</td><td>Rotterdam, NL</td></tr>
+              <tr><td><a href="#">0032257554</a></td><td>40 high</td><td><a href="#">4500353629</a></td><td><a href="#">WEM4398R</a></td><td>BL-2026-CPH-004512</td><td>1004403407</td><td><span class="tag tag--neutral">Returned</span> <span style="color:var(--mds-neutral-weakest-text);font-size:12px">1 week ago</span></td><td>Port Klang, Malaysia</td><td>Haps, NL</td></tr>
+              <tr><td><a href="#">0SBK0002379207</a></td><td>40 high</td><td><a href="#">4500503393</a></td><td><a href="#">E4894BATT</a></td><td>BOL-CX9F-773201</td><td>1004403410</td><td><span class="tag tag--neutral">Arrived</span> <span style="color:var(--mds-neutral-weakest-text);font-size:12px">2 hours ago</span></td><td>Sines, Portugal</td><td>Shanghai, China</td></tr>
+              <tr><td><a href="#">0SBK0002416402</a></td><td>20 dry</td><td><a href="#">4500353221</a></td><td><a href="#">Multiple (6)</a></td><td>SHP-89A2-112034</td><td>1004403666</td><td><span class="tag tag--neutral">Departed</span> <span style="color:var(--mds-neutral-weakest-text);font-size:12px">2 days ago</span></td><td>Ningbo, China</td><td>Rotterdam, NL</td></tr>
+              <tr><td><a href="#">0022277341</a></td><td>40 dry</td><td><a href="#">4500601843</a></td><td><a href="#">Multiple (23)</a></td><td>DLX-BL-5548A239</td><td>1004403406</td><td><span class="tag tag--neutral">Gate-in</span> <span style="color:var(--mds-neutral-weakest-text);font-size:12px">36 minutes ago</span></td><td>Mumbai, India</td><td>Rotterdam, NL</td></tr>
+              <tr><td><a href="#">0032257554</a></td><td>40 high</td><td><a href="#">4500353629</a></td><td><a href="#">WEM4398R</a></td><td>BL-2026-CPH-004512</td><td>1004403407</td><td><span class="tag tag--neutral">Import customs cleared</span> <span style="color:var(--mds-neutral-weakest-text);font-size:12px">1 hour ago</span></td><td>Port Klang, Malaysia</td><td>Haps, NL</td></tr>
+            </tbody>
+          </table>
+
+          <div class="list-pager">
+            <span>1&ndash;15 of 527 items</span>
+            <div class="list-pager__pages">
+              <svg viewBox="0 0 24 24" class="disabled"><path d="m11 17-5-5 5-5"/><path d="m18 17-5-5 5-5"/></svg>
+              <svg viewBox="0 0 24 24" class="disabled"><path d="M14.175 19.38L7.35 13.53a1 1 0 01-.35-.76v-1.54a1 1 0 01.35-.76l6.825-5.85.65.76L8 11.23v1.54l6.825 5.85-.65.76z"/></svg>
+              <button class="pill-btn">1 <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
+              <span>of 35 pages</span>
+              <svg viewBox="0 0 24 24"><path d="M9.825 4.62l6.825 5.85a1 1 0 01.35.76v1.54a1 1 0 01-.35.76l-6.825 5.85-.65-.76L16 12.77v-1.54L9.175 5.38l.65-.76z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="m6 17 5-5-5-5"/><path d="m13 17 5-5-5-5"/></svg>
+            </div>
           </div>
         </div>
       </section>
@@ -501,7 +545,7 @@
             <span class="card__head-spacer"></span>
             <svg class="card-menu" viewBox="0 0 24 24" aria-label="More options"><path d="M12 7.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 19.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0-6a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
           </div>
-          <svg class="bars" viewBox="0 0 620 300" preserveAspectRatio="xMidYMid meet">
+          <div class="bars-wrap"><svg class="bars" viewBox="0 0 660 300" preserveAspectRatio="xMidYMid meet">
             <defs>
               <g id="ic-port" stroke="#6A6A6A" stroke-width="1.4" fill="none"><path d="M2 15h16M4 15V8l6-3 6 3v7M8 15v-4h4v4"/></g>
               <g id="ic-ship" stroke="#6A6A6A" stroke-width="1.4" fill="none"><path d="M2 12l1.5 5h13L18 12M2 12l8-2 8 2M4 12V8h12v4M10 10V4"/></g>
@@ -527,7 +571,7 @@
             <use href="#ic-ship" x="448" y="250"/><text x="458" y="284" text-anchor="middle" class="axis-lbl">MSC Irina</text>
             <use href="#ic-ship" x="538" y="250"/><text x="548" y="284" text-anchor="middle" class="axis-lbl">Ever Apex</text>
             <text x="330" y="300" text-anchor="middle" class="axis-lbl">Node (location/vessel)</text>
-          </svg>
+          </svg></div>
         </section>
       </div>
 
@@ -539,7 +583,7 @@
             <span class="card__head-spacer"></span>
             <svg class="card-menu" viewBox="0 0 24 24" aria-label="More options"><path d="M12 7.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 19.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0-6a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
           </div>
-          <svg class="bars" viewBox="0 0 620 300" preserveAspectRatio="xMidYMid meet">
+          <div class="bars-wrap"><svg class="bars" viewBox="0 0 660 300" preserveAspectRatio="xMidYMid meet">
             <text x="14" y="150" transform="rotate(-90 14 150)" text-anchor="middle" class="axis-lbl">Transport cost (1,000 USD)</text>
             <line class="grid-line" x1="48" y1="30" x2="612" y2="30"/><text x="42" y="34" text-anchor="end" class="axis-lbl">600</text>
             <line class="grid-line" x1="48" y1="100" x2="612" y2="100"/><text x="42" y="104" text-anchor="end" class="axis-lbl">400</text>
@@ -558,11 +602,338 @@
             <text x="458" y="258" text-anchor="middle" class="axis-lbl">India</text>
             <text x="548" y="258" text-anchor="middle" class="axis-lbl">United States</text>
             <text x="330" y="290" text-anchor="middle" class="axis-lbl">Country</text>
-          </svg>
+          </svg></div>
         </section>
       </div>
 
       <button class="add-widget"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> Add widget</button>
+      </div>
+
+      <div id="panel-ddops" class="tab-panel">
+        <!-- Key metrics -->
+        <section class="card">
+          <div class="card__head">
+            <span class="card__title"><svg viewBox="0 0 24 24"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg> Key metrics</span>
+            <span class="card__head-spacer"></span>
+            <svg class="card-menu" viewBox="0 0 24 24" aria-label="More options"><path d="M12 7.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 19.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0-6a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
+          </div>
+          <div class="metrics">
+            <div class="metric">
+              <div class="metric__value-row"><span class="metric__value metric__value--blue">71</span><span class="delta delta--amber">&uarr; 13</span></div>
+              <div class="metric__label">Containers at risk</div>
+            </div>
+            <div class="metric">
+              <div class="metric__value-row"><span class="metric__value metric__value--blue">26</span><span class="delta delta--green">&darr; 2</span></div>
+              <div class="metric__label">Containers incurring demurrage</div>
+            </div>
+            <div class="metric">
+              <div class="metric__value-row"><span class="metric__value metric__value--blue">48</span><span class="delta delta--amber">&uarr; 5</span></div>
+              <div class="metric__label">Containers incurring detention</div>
+            </div>
+            <div class="metric">
+              <div class="metric__value-row"><span class="metric__value">24.1</span><span class="delta delta--green">&darr; 1.6</span></div>
+              <div class="metric__label">Avg. demurrage days</div>
+            </div>
+            <div class="metric">
+              <div class="metric__value-row"><span class="metric__value">56.0</span><span class="delta delta--amber">&uarr; 0.9</span></div>
+              <div class="metric__label">Avg. detention days</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Containers map -->
+        <section class="card card--flush">
+          <div class="ship-toolbar">
+            <span class="card__title"><svg viewBox="0 0 24 24"><path d="M22 7.7c0-.6-.4-1.2-.8-1.5l-6.3-3.9a1.72 1.72 0 0 0-1.7 0l-10.3 6c-.5.2-.9.8-.9 1.4v6.6c0 .5.4 1.2.8 1.5l6.3 3.9a1.72 1.72 0 0 0 1.7 0l10.3-6c.5-.3.9-1 .9-1.5Z"/><path d="M10 21.9V14L2.1 9.1"/><path d="m10 14 11.9-6.9"/><path d="M14 19.8v-8.1"/><path d="M18 17.5V9.4"/></svg> Containers</span>
+            <span class="ship-toolbar__spacer"></span>
+            <button class="pill-btn"><svg viewBox="0 0 24 24"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg> All <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
+            <div class="toggle-group">
+              <span class="toggle-group__item active" data-view="dd-map"><svg viewBox="0 0 24 24"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/></svg> Map</span>
+              <span class="toggle-group__item" data-view="dd-list"><svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg> List</span>
+            </div>
+            <svg class="card-menu" viewBox="0 0 24 24" aria-label="More options"><path d="M12 7.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 19.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0-6a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
+          </div>
+
+          <div class="map">
+            <img class="map__img" src="world.svg" alt="World map" />
+            <div class="map__search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg> Search for country, port, container, and more</div>
+
+            <!-- D&D pins: donut-ring style (red=incurring, amber=at risk, green=within free time, gray=other) -->
+            <div class="dd-pin" style="left:49.7%;top:28.6%"><div class="dd-pin__shape"><div class="dd-pin__ring"></div><span class="dd-pin__count">49</span></div></div>
+            <div class="dd-pin" style="left:15%;top:44.1%"><div class="dd-pin__shape"><div class="dd-pin__ring"></div><span class="dd-pin__count">24</span></div></div>
+            <div class="dd-pin" style="left:26.2%;top:50.3%"><div class="dd-pin__shape"><div class="dd-pin__ring"></div><span class="dd-pin__count">19</span></div></div>
+            <div class="dd-pin" style="left:68.8%;top:57.5%"><div class="dd-pin__shape"><div class="dd-pin__ring"></div><span class="dd-pin__count">38</span></div></div>
+            <div class="dd-pin" style="left:81.9%;top:49.5%"><div class="dd-pin__shape"><div class="dd-pin__ring"></div><span class="dd-pin__count">61</span></div></div>
+            <div class="dd-pin" style="left:31%;top:38%"><div class="dd-pin__shape"><div class="dd-pin__ring"></div><span class="dd-pin__count">15</span></div></div>
+            <div class="dd-pin" style="left:41%;top:36%"><div class="dd-pin__shape"><div class="dd-pin__ring"></div><span class="dd-pin__count">22</span></div></div>
+            <div class="dd-pin" style="left:23%;top:63%"><div class="dd-pin__shape"><div class="dd-pin__ring"></div><span class="dd-pin__count">33</span></div></div>
+            <div class="dd-pin" style="left:52%;top:73%"><div class="dd-pin__shape"><div class="dd-pin__ring"></div><span class="dd-pin__count">27</span></div></div>
+            <div class="dd-pin" style="left:71%;top:46%"><div class="dd-pin__shape"><div class="dd-pin__ring"></div><span class="dd-pin__count">44</span></div></div>
+            <div class="dd-pin" style="left:85%;top:66%"><div class="dd-pin__shape"><div class="dd-pin__ring"></div><span class="dd-pin__count">18</span></div></div>
+
+            <div class="map__controls">
+              <button><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+              <button><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button>
+              <button><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></button>
+            </div>
+          </div>
+        </section>
+
+        <!-- D&D status summary + side stats -->
+        <div class="grid-2">
+          <section class="card">
+            <div class="card__head">
+              <span class="card__title"><svg viewBox="0 0 24 24"><path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/></svg> D&amp;D status summary</span>
+              <span class="tag tag--neutral">Export</span>
+              <span class="card__head-spacer"></span>
+              <svg class="card-menu" viewBox="0 0 24 24" aria-label="More options"><path d="M12 7.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 19.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0-6a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
+            </div>
+            <div class="chart-wrap">
+              <svg class="donut" width="200" height="200" viewBox="0 0 200 200">
+                <g transform="rotate(-90 100 100)" fill="none" stroke-width="34">
+                  <circle cx="100" cy="100" r="80" pathLength="100" stroke="#E9B2B7" stroke-dasharray="26 100" stroke-dashoffset="0"/>
+                  <circle cx="100" cy="100" r="80" pathLength="100" stroke="#FFEBA8" stroke-dasharray="13 100" stroke-dashoffset="-26"/>
+                  <circle cx="100" cy="100" r="80" pathLength="100" stroke="#C5E5C2" stroke-dasharray="40 100" stroke-dashoffset="-39"/>
+                  <circle cx="100" cy="100" r="80" pathLength="100" stroke="var(--mds-neutral-border)" stroke-dasharray="21 100" stroke-dashoffset="-79"/>
+                </g>
+                <text x="100" y="98" text-anchor="middle" font-family="Maersk Headline, Arial" font-size="30" fill="#141414">243</text>
+                <text x="100" y="118" text-anchor="middle" font-family="Maersk Text, Arial" font-size="12" fill="#6A6A6A">Containers</text>
+              </svg>
+              <div class="legend">
+                <div class="legend__item"><span class="legend__swatch" style="background:#E9B2B7"></span> Incurring: 64 (26%)</div>
+                <div class="legend__item"><span class="legend__swatch" style="background:#FFEBA8"></span> At risk: 31 (13%)</div>
+                <div class="legend__item"><span class="legend__swatch" style="background:#C5E5C2"></span> Within free time: 96 (40%)</div>
+                <div class="legend__item"><span class="legend__swatch" style="background:var(--mds-neutral-border)"></span> Other: 52 (21%)</div>
+              </div>
+            </div>
+          </section>
+
+          <div class="card-stack">
+            <section class="card">
+              <div class="card__head">
+                <span class="card__title"><svg viewBox="0 0 24 24"><path d="M16 14v2.2l1.6 1"/><path d="M16 2v4"/><path d="M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5"/><path d="M3 10h5"/><path d="M8 2v4"/><circle cx="16" cy="16" r="6"/></svg> Long-standing D&amp;D</span>
+                <span class="tag tag--neutral">30+ days &middot; Configure</span>
+                <span class="card__head-spacer"></span>
+                <svg class="card-menu" viewBox="0 0 24 24" aria-label="More options"><path d="M12 7.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 19.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0-6a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
+              </div>
+              <div class="stat-row">
+                <div class="stat-block"><div class="stat-block__row"><span class="stat-block__value">26</span><span class="tag tag--amber">5</span></div><div class="stat-block__label">Combined</div></div>
+                <div class="stat-block"><div class="stat-block__row"><span class="stat-block__value">12</span><span class="tag tag--amber">5</span></div><div class="stat-block__label">Demurrage</div></div>
+                <div class="stat-block"><div class="stat-block__row"><span class="stat-block__value">14</span></div><div class="stat-block__label">Detention</div></div>
+              </div>
+            </section>
+
+            <section class="card">
+              <div class="card__head">
+                <span class="card__title"><svg viewBox="0 0 24 24"><path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17h.01"/></svg> D&amp;D risk predictions</span>
+                <span class="tag tag--neutral">AI risk assessment</span>
+                <span class="card__head-spacer"></span>
+                <svg class="card-menu" viewBox="0 0 24 24" aria-label="More options"><path d="M12 7.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 19.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0-6a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
+              </div>
+              <div class="stat-row">
+                <div class="stat-block"><div class="stat-block__row"><span class="stat-block__value">87</span><span class="tag tag--amber">12</span></div><div class="stat-block__label">High risk</div></div>
+                <div class="stat-block"><div class="stat-block__row"><span class="stat-block__value">142</span><span class="tag tag--neutral">3</span></div><div class="stat-block__label">Medium risk</div></div>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <button class="add-widget"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> Add widget</button>
+      </div>
+
+      <div id="panel-ddanalytics" class="tab-panel">
+        <!-- Financial metrics -->
+        <section class="card">
+          <div class="card__head">
+            <span class="card__title"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg> Financial metrics</span>
+            <span class="tag tag--neutral">Actual YTD</span>
+            <span class="card__head-spacer"></span>
+            <svg class="card-menu" viewBox="0 0 24 24" aria-label="More options"><path d="M12 7.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 19.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0-6a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
+          </div>
+          <div class="metrics">
+            <div class="metric">
+              <div class="metric__value-row"><span class="metric__value">2.53M</span><span class="delta delta--neutral">&uarr; 86K</span></div>
+              <div class="metric__label">Total cost (USD)</div>
+            </div>
+            <div class="metric">
+              <div class="metric__value-row"><span class="metric__value">1.71M</span><span class="delta delta--neutral">&uarr; 14K</span></div>
+              <div class="metric__label">Total demurrage cost (USD)</div>
+            </div>
+            <div class="metric">
+              <div class="metric__value-row"><span class="metric__value">846K</span><span class="delta delta--neutral">&uarr; 5K</span></div>
+              <div class="metric__label">Total detention cost (USD)</div>
+            </div>
+            <div class="metric">
+              <div class="metric__value-row"><span class="metric__value">763</span><span class="delta delta--amber">&uarr; 82</span></div>
+              <div class="metric__label">Avg. demurrage cost (USD)</div>
+            </div>
+            <div class="metric">
+              <div class="metric__value-row"><span class="metric__value">409</span><span class="delta delta--green">&darr; 26</span></div>
+              <div class="metric__label">Avg. detention cost (USD)</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Country + Carrier dual-axis bar charts -->
+        <div class="grid-2">
+          <section class="card">
+            <div class="card__head">
+              <span class="card__title"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg> D&amp;D cost and duration by country</span>
+              <span class="tag tag--neutral">Actual YTD</span>
+              <span class="card__head-spacer"></span>
+              <svg class="card-menu" viewBox="0 0 24 24" aria-label="More options"><path d="M12 7.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 19.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0-6a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
+            </div>
+            <div class="bars-wrap"><svg class="bars" viewBox="0 0 660 300" preserveAspectRatio="xMidYMid meet">
+              <line class="grid-line" x1="90" y1="30" x2="610" y2="30"/><text x="84" y="34" text-anchor="end" class="axis-lbl">150</text><text x="616" y="34" class="axis-lbl">60</text>
+              <line class="grid-line" x1="90" y1="100" x2="610" y2="100"/><text x="84" y="104" text-anchor="end" class="axis-lbl">100</text><text x="616" y="104" class="axis-lbl">40</text>
+              <line class="grid-line" x1="90" y1="170" x2="610" y2="170"/><text x="84" y="174" text-anchor="end" class="axis-lbl">50</text><text x="616" y="174" class="axis-lbl">20</text>
+              <line class="grid-line" x1="90" y1="240" x2="610" y2="240"/><text x="84" y="244" text-anchor="end" class="axis-lbl">0</text><text x="616" y="244" class="axis-lbl">0</text>
+              <rect class="bar" x="121" y="40" width="20" height="200"/><rect class="bar bar--navy" x="143" y="55" width="20" height="185"/><text x="142" y="258" text-anchor="middle" class="axis-lbl">United States</text>
+              <rect class="bar" x="225" y="97" width="20" height="143"/><rect class="bar bar--navy" x="247" y="61" width="20" height="179"/><text x="246" y="258" text-anchor="middle" class="axis-lbl">Italy</text>
+              <rect class="bar" x="329" y="97" width="20" height="143"/><rect class="bar bar--navy" x="351" y="114" width="20" height="126"/><text x="350" y="258" text-anchor="middle" class="axis-lbl">Germany</text>
+              <rect class="bar" x="433" y="118" width="20" height="122"/><rect class="bar bar--navy" x="455" y="51" width="20" height="189"/><text x="454" y="258" text-anchor="middle" class="axis-lbl">Portugal</text>
+              <rect class="bar" x="537" y="160" width="20" height="80"/><rect class="bar bar--navy" x="559" y="114" width="20" height="126"/><text x="558" y="258" text-anchor="middle" class="axis-lbl">France</text>
+            </svg></div>
+            <div class="legend legend--row">
+              <div class="legend__item"><span class="legend__swatch" style="background:var(--chart-cyan)"></span> Cost (1,000 USD)</div>
+              <div class="legend__item"><span class="legend__swatch" style="background:var(--scp-platform-header-bg)"></span> Days incurring (total)</div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card__head">
+              <span class="card__title"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg> D&amp;D cost and duration by carrier</span>
+              <span class="tag tag--neutral">Actual YTD</span>
+              <span class="card__head-spacer"></span>
+              <svg class="card-menu" viewBox="0 0 24 24" aria-label="More options"><path d="M12 7.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 19.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0-6a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
+            </div>
+            <div class="bars-wrap"><svg class="bars" viewBox="0 0 660 300" preserveAspectRatio="xMidYMid meet">
+              <line class="grid-line" x1="90" y1="30" x2="610" y2="30"/><text x="84" y="34" text-anchor="end" class="axis-lbl">600</text><text x="616" y="34" class="axis-lbl">30</text>
+              <line class="grid-line" x1="90" y1="100" x2="610" y2="100"/><text x="84" y="104" text-anchor="end" class="axis-lbl">400</text><text x="616" y="104" class="axis-lbl">20</text>
+              <line class="grid-line" x1="90" y1="170" x2="610" y2="170"/><text x="84" y="174" text-anchor="end" class="axis-lbl">200</text><text x="616" y="174" class="axis-lbl">10</text>
+              <line class="grid-line" x1="90" y1="240" x2="610" y2="240"/><text x="84" y="244" text-anchor="end" class="axis-lbl">0</text><text x="616" y="244" class="axis-lbl">0</text>
+              <rect class="bar" x="121" y="83" width="20" height="157"/><rect class="bar bar--navy" x="143" y="205" width="20" height="35"/><text x="142" y="258" text-anchor="middle" class="axis-lbl">Allianca</text>
+              <rect class="bar" x="225" y="107" width="20" height="133"/><rect class="bar bar--navy" x="247" y="174" width="20" height="66"/><text x="246" y="258" text-anchor="middle" class="axis-lbl">Maersk</text>
+              <rect class="bar" x="329" y="118" width="20" height="122"/><rect class="bar bar--navy" x="351" y="107" width="20" height="133"/><text x="350" y="258" text-anchor="middle" class="axis-lbl">MSC</text>
+              <rect class="bar" x="433" y="135" width="20" height="105"/><rect class="bar bar--navy" x="455" y="195" width="20" height="45"/><text x="454" y="258" text-anchor="middle" class="axis-lbl">Safmarine</text>
+              <rect class="bar" x="537" y="160" width="20" height="80"/><rect class="bar bar--navy" x="559" y="177" width="20" height="63"/><text x="558" y="258" text-anchor="middle" class="axis-lbl">Evergreen</text>
+            </svg></div>
+            <div class="legend legend--row">
+              <div class="legend__item"><span class="legend__swatch" style="background:var(--chart-cyan)"></span> Avg. cost per shipment (USD)</div>
+              <div class="legend__item"><span class="legend__swatch" style="background:var(--scp-platform-header-bg)"></span> Avg. days incurring</div>
+            </div>
+          </section>
+        </div>
+
+        <!-- D&D cost over time -->
+        <section class="card">
+          <div class="card__head">
+            <span class="card__title"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg> D&amp;D cost over time</span>
+            <span class="card__head-spacer"></span>
+            <div class="segmented"><span class="segmented__item active">Weeks</span><span class="segmented__item">Months</span></div>
+            <svg class="card-menu" viewBox="0 0 24 24" aria-label="More options"><path d="M12 7.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 19.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0-6a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
+          </div>
+          <div class="bars-wrap"><svg class="bars bars--wide" viewBox="0 0 1260 340" preserveAspectRatio="xMidYMid meet">
+            <line class="grid-line" x1="90" y1="40" x2="1150" y2="40"/><text x="84" y="44" text-anchor="end" class="axis-lbl">500</text><text x="1156" y="44" class="axis-lbl">1,000</text>
+            <line class="grid-line" x1="90" y1="100" x2="1150" y2="100"/><text x="84" y="104" text-anchor="end" class="axis-lbl">375</text><text x="1156" y="104" class="axis-lbl">750</text>
+            <line class="grid-line" x1="90" y1="160" x2="1150" y2="160"/><text x="84" y="164" text-anchor="end" class="axis-lbl">250</text><text x="1156" y="164" class="axis-lbl">500</text>
+            <line class="grid-line" x1="90" y1="220" x2="1150" y2="220"/><text x="84" y="224" text-anchor="end" class="axis-lbl">125</text><text x="1156" y="224" class="axis-lbl">250</text>
+            <line class="grid-line" x1="90" y1="280" x2="1150" y2="280"/><text x="84" y="284" text-anchor="end" class="axis-lbl">0</text><text x="1156" y="284" class="axis-lbl">0</text>
+            <rect class="bar" x="123" y="60" width="20" height="220"/><rect class="bar bar--gray" x="145" y="88" width="20" height="192"/><text x="143" y="298" text-anchor="middle" class="axis-lbl">W46 '25</text>
+            <rect class="bar" x="229" y="82" width="20" height="198"/><rect class="bar bar--gray" x="251" y="118" width="20" height="162"/><text x="249" y="298" text-anchor="middle" class="axis-lbl">W47 '25</text>
+            <rect class="bar" x="335" y="82" width="20" height="198"/><rect class="bar bar--gray" x="357" y="88" width="20" height="192"/><text x="355" y="298" text-anchor="middle" class="axis-lbl">W48 '26</text>
+            <rect class="bar" x="441" y="93" width="20" height="187"/><rect class="bar bar--gray" x="463" y="130" width="20" height="150"/><text x="461" y="298" text-anchor="middle" class="axis-lbl">W49 '25</text>
+            <rect class="bar" x="547" y="100" width="20" height="180"/><rect class="bar bar--gray" x="569" y="52" width="20" height="228"/><text x="565" y="298" text-anchor="middle" class="axis-lbl">W50 '25</text>
+            <rect class="bar" x="653" y="107" width="20" height="173"/><rect class="bar bar--gray" x="675" y="123" width="20" height="157"/><text x="671" y="298" text-anchor="middle" class="axis-lbl">W51 '25</text>
+            <rect class="bar" x="759" y="165" width="20" height="115"/><rect class="bar bar--gray" x="781" y="152" width="20" height="128"/><text x="777" y="298" text-anchor="middle" class="axis-lbl">W52 '25</text>
+            <rect class="bar" x="865" y="122" width="20" height="158"/><rect class="bar bar--gray" x="887" y="107" width="20" height="173"/><text x="883" y="298" text-anchor="middle" class="axis-lbl">W1 '26</text>
+            <rect class="bar" x="971" y="130" width="20" height="150"/><rect class="bar bar--gray" x="993" y="65" width="20" height="215"/><text x="989" y="298" text-anchor="middle" class="axis-lbl">W2 '26</text>
+            <rect class="bar" x="1077" y="145" width="20" height="135"/><rect class="bar bar--gray" x="1099" y="145" width="20" height="135"/><text x="1095" y="298" text-anchor="middle" class="axis-lbl">W3 '26</text>
+            <polyline class="line-series" stroke="var(--scp-platform-header-bg)" points="143,166 249,197 355,177 461,193 567,203 673,190 779,145 885,197 991,172 1097,197"/>
+            <circle class="line-dot" cx="143" cy="166" r="4" fill="var(--scp-platform-header-bg)"/>
+            <circle class="line-dot" cx="249" cy="197" r="4" fill="var(--scp-platform-header-bg)"/>
+            <circle class="line-dot" cx="355" cy="177" r="4" fill="var(--scp-platform-header-bg)"/>
+            <circle class="line-dot" cx="461" cy="193" r="4" fill="var(--scp-platform-header-bg)"/>
+            <circle class="line-dot" cx="567" cy="203" r="4" fill="var(--scp-platform-header-bg)"/>
+            <circle class="line-dot" cx="673" cy="190" r="4" fill="var(--scp-platform-header-bg)"/>
+            <circle class="line-dot" cx="779" cy="145" r="4" fill="var(--scp-platform-header-bg)"/>
+            <circle class="line-dot" cx="885" cy="197" r="4" fill="var(--scp-platform-header-bg)"/>
+            <circle class="line-dot" cx="991" cy="172" r="4" fill="var(--scp-platform-header-bg)"/>
+            <circle class="line-dot" cx="1097" cy="197" r="4" fill="var(--scp-platform-header-bg)"/>
+            <text x="640" y="322" text-anchor="middle" class="axis-lbl">Week</text>
+            <text x="30" y="210" text-anchor="middle" class="axis-lbl" transform="rotate(-90 30 210)">Cost (1,000 USD)</text>
+            <text x="1192" y="210" text-anchor="middle" class="axis-lbl" transform="rotate(-90 1192 210)">Containers</text>
+          </svg></div>
+          <div class="legend legend--row">
+            <div class="legend__item"><span class="legend__swatch" style="background:var(--chart-cyan)"></span> Cost (1,000 USD)</div>
+            <div class="legend__item"><span class="legend__swatch" style="background:#D9D9D9"></span> Containers</div>
+            <div class="legend__item"><span class="legend__swatch" style="background:var(--scp-platform-header-bg)"></span> Avg. cost per container (%)</div>
+          </div>
+        </section>
+
+        <!-- Consignee line chart + Combined stacked bars -->
+        <div class="grid-2">
+          <section class="card">
+            <div class="card__head">
+              <span class="card__title"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg> D&amp;D cost by consignee</span>
+              <span class="card__head-spacer"></span>
+              <div class="segmented"><span class="segmented__item active">Weeks</span><span class="segmented__item">Months</span></div>
+              <svg class="card-menu" viewBox="0 0 24 24" aria-label="More options"><path d="M12 7.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 19.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0-6a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
+            </div>
+            <div class="bars-wrap"><svg class="bars bars--tall" viewBox="0 0 640 280" preserveAspectRatio="xMidYMid meet">
+              <line class="grid-line" x1="90" y1="30" x2="610" y2="30"/><text x="84" y="34" text-anchor="end" class="axis-lbl">750</text>
+              <line class="grid-line" x1="90" y1="100" x2="610" y2="100"/><text x="84" y="104" text-anchor="end" class="axis-lbl">500</text>
+              <line class="grid-line" x1="90" y1="170" x2="610" y2="170"/><text x="84" y="174" text-anchor="end" class="axis-lbl">250</text>
+              <line class="grid-line" x1="90" y1="240" x2="610" y2="240"/><text x="84" y="244" text-anchor="end" class="axis-lbl">0</text>
+              <polyline class="line-series" stroke="var(--scp-platform-header-bg)" points="90,94 194,78 298,100 402,72 506,72 610,89"/>
+              <polyline class="line-series" stroke="#F2703C" points="90,97 194,80 298,106 402,108 506,100 610,120"/>
+              <polyline class="line-series" stroke="#B0B0B0" points="90,128 194,164 298,106 402,164 506,145 610,128"/>
+              <polyline class="line-series" stroke="var(--chart-cyan)" points="90,178 194,177 298,159 402,187 506,156 610,190"/>
+              <text x="90" y="258" text-anchor="middle" class="axis-lbl">Aug '25</text>
+              <text x="194" y="258" text-anchor="middle" class="axis-lbl">Sep '25</text>
+              <text x="298" y="258" text-anchor="middle" class="axis-lbl">Oct '25</text>
+              <text x="402" y="258" text-anchor="middle" class="axis-lbl">Nov '25</text>
+              <text x="506" y="258" text-anchor="middle" class="axis-lbl">Dec '25</text>
+              <text x="610" y="258" text-anchor="middle" class="axis-lbl">Jan '26</text>
+              <text x="30" y="140" text-anchor="middle" class="axis-lbl" transform="rotate(-90 30 140)">Avg. cost per shipment (USD)</text>
+            </svg></div>
+            <div class="legend legend--row">
+              <div class="legend__item"><span class="legend__swatch" style="background:var(--chart-cyan)"></span> Metro Supply</div>
+              <div class="legend__item"><span class="legend__swatch" style="background:var(--scp-platform-header-bg)"></span> Unified Cargo</div>
+              <div class="legend__item"><span class="legend__swatch" style="background:#F2703C"></span> Cont. Logistics</div>
+              <div class="legend__item"><span class="legend__swatch" style="background:#B0B0B0"></span> Reg. Food &amp; Beverage</div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card__head">
+              <span class="card__title"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg> Combined D&amp;D</span>
+              <span class="card__head-spacer"></span>
+              <div class="segmented"><span class="segmented__item active">Weeks</span><span class="segmented__item">Months</span></div>
+              <svg class="card-menu" viewBox="0 0 24 24" aria-label="More options"><path d="M12 7.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 19.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0-6a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
+            </div>
+            <div class="bars-wrap"><svg class="bars bars--tall" viewBox="0 0 640 280" preserveAspectRatio="xMidYMid meet">
+              <line class="grid-line" x1="90" y1="30" x2="610" y2="30"/><text x="84" y="34" text-anchor="end" class="axis-lbl">750</text>
+              <line class="grid-line" x1="90" y1="100" x2="610" y2="100"/><text x="84" y="104" text-anchor="end" class="axis-lbl">500</text>
+              <line class="grid-line" x1="90" y1="170" x2="610" y2="170"/><text x="84" y="174" text-anchor="end" class="axis-lbl">250</text>
+              <line class="grid-line" x1="90" y1="240" x2="610" y2="240"/><text x="84" y="244" text-anchor="end" class="axis-lbl">0</text>
+              <rect class="bar" x="66" y="128" width="48" height="112"/><rect class="bar bar--navy" x="66" y="66" width="48" height="62"/><text x="90" y="258" text-anchor="middle" class="axis-lbl">Aug '25</text>
+              <rect class="bar" x="170" y="190" width="48" height="50"/><rect class="bar bar--navy" x="170" y="92" width="48" height="98"/><text x="194" y="258" text-anchor="middle" class="axis-lbl">Sep '25</text>
+              <rect class="bar" x="274" y="139" width="48" height="101"/><rect class="bar bar--navy" x="274" y="75" width="48" height="64"/><text x="298" y="258" text-anchor="middle" class="axis-lbl">Oct '25</text>
+              <rect class="bar" x="378" y="131" width="48" height="109"/><rect class="bar bar--navy" x="378" y="80" width="48" height="51"/><text x="402" y="258" text-anchor="middle" class="axis-lbl">Nov '25</text>
+              <rect class="bar" x="482" y="162" width="48" height="78"/><rect class="bar bar--navy" x="482" y="66" width="48" height="96"/><text x="506" y="258" text-anchor="middle" class="axis-lbl">Dec '25</text>
+              <rect class="bar" x="586" y="153" width="48" height="87"/><rect class="bar bar--navy" x="586" y="83" width="48" height="70"/><text x="610" y="258" text-anchor="middle" class="axis-lbl">Jan '26</text>
+              <text x="30" y="140" text-anchor="middle" class="axis-lbl" transform="rotate(-90 30 140)">Cost (1,000 USD)</text>
+            </svg></div>
+            <div class="legend legend--row">
+              <div class="legend__item"><span class="legend__swatch" style="background:var(--chart-cyan)"></span> Demurrage</div>
+              <div class="legend__item"><span class="legend__swatch" style="background:var(--scp-platform-header-bg)"></span> Detention</div>
+            </div>
+          </section>
+        </div>
+
+        <button class="add-widget"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> Add widget</button>
+      </div>
 
     </div>
   </main>
@@ -1178,13 +1549,87 @@
     </div>
   </div>
 
+  <!-- Filters drawer -->
+  <div class="drawer-scrim" id="drawer-filters">
+    <div class="drawer drawer--left">
+      <div class="drawer__header">
+        <div class="drawer__titles">
+          <span class="drawer__name">Filters</span>
+        </div>
+        <svg class="drawer__favorite" viewBox="0 0 24 24"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>
+        <svg class="drawer__close" data-close-drawer viewBox="0 0 24 24"><path d="M11.293 12L4.646 5.354l.708-.707L12 11.293l6.646-6.646.708.707L12.707 12l6.647 6.646-.707.708L12 12.707l-6.646 6.647-.708-.707L11.293 12z"/></svg>
+      </div>
+
+      <div class="drawer__body">
+        <div class="drawer__section-title">
+          <span class="drawer__section-icon"><svg viewBox="0 0 24 24"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><circle cx="11.5" cy="14.5" r="2.5"/><path d="M13.3 16.3 15 18"/></svg></span>
+          <span>References</span>
+        </div>
+        <div class="f-fields">
+          <input class="f-input" placeholder="Order number">
+          <input class="f-input" placeholder="Bill of lading number">
+          <input class="f-input" placeholder="Group number">
+          <input class="f-input" placeholder="SKU number">
+          <input class="f-input" placeholder="Container ID">
+        </div>
+
+        <div class="drawer__section-title">
+          <span class="drawer__section-icon"><svg viewBox="0 0 24 24"><path d="M17.925 20.056a6 6 0 0 0-11.851.001"/><circle cx="12" cy="11" r="4"/><circle cx="12" cy="12" r="10"/></svg></span>
+          <span>Parties</span>
+        </div>
+        <div class="f-fields">
+          <div class="f-search-wrap"><input class="f-input" placeholder="Contractual customer"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg></div>
+
+          <div class="f-search-wrap"><input class="f-input" placeholder="Business unit"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg></div>
+
+          <div class="f-search-wrap"><input class="f-input" placeholder="Consignee"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg></div>
+          <div class="f-chips"><span class="chip">SCHNEIDER ELECTRIC <span class="chip__x"><svg viewBox="0 0 20 20"><path d="M4.64648 5.35359L9.29293 10L4.64648 14.6465L5.35359 15.3536L10 10.7071L14.6465 15.3536L15.3536 14.6465L10.7071 10L15.3536 5.35359L14.6465 4.64648L10 9.29293L5.35359 4.64648L4.64648 5.35359Z"/></svg></span></span></div>
+
+          <div class="f-search-wrap"><input class="f-input" placeholder="Shipper"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg></div>
+          <div class="f-chips"><span class="chip">Schneider Electric Asia Pte Ltd <span class="chip__x"><svg viewBox="0 0 20 20"><path d="M4.64648 5.35359L9.29293 10L4.64648 14.6465L5.35359 15.3536L10 10.7071L14.6465 15.3536L15.3536 14.6465L10.7071 10L15.3536 5.35359L14.6465 4.64648L10 9.29293L5.35359 4.64648L4.64648 5.35359Z"/></svg></span></span></div>
+
+          <div class="f-search-wrap"><input class="f-input" placeholder="Carrier"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg></div>
+        </div>
+      </div>
+
+      <div class="drawer__footer">
+        <button class="btn btn--primary">Apply filters</button>
+        <button class="btn btn--outlined">Clear filters</button>
+      </div>
+    </div>
+  </div>
+
   <script src="../../shared/shell.js"></script>
   <script>
     // local tab + segmented + toggle switching (shared shell.js only knows .tab-bar / .nav-item)
-    document.querySelectorAll('.cockpit-tabs__item, .segmented__item, .toggle-group__item').forEach(el => {
+    document.querySelectorAll('.segmented__item, .toggle-group__item').forEach(el => {
       el.addEventListener('click', () => {
         el.parentElement.querySelectorAll('.active').forEach(s => s.classList.remove('active'));
         el.classList.add('active');
+        const card = el.closest('.card');
+        const mapEl = card && card.querySelector('.map');
+        const listEl = card && card.querySelector('.list-view');
+        if (!mapEl || !listEl) return;
+        if (el.dataset.view === 'list' || el.dataset.view === 'dd-list') {
+          mapEl.classList.add('hidden');
+          listEl.classList.add('active');
+        } else if (el.dataset.view === 'map' || el.dataset.view === 'dd-map') {
+          mapEl.classList.remove('hidden');
+          listEl.classList.remove('active');
+        }
+      });
+    });
+
+    // Page tabs: Shipment overview / D&D operations / D&D analytics
+    const tabPanels = { 'Shipment overview': 'panel-overview', 'D&D operations': 'panel-ddops', 'D&D analytics': 'panel-ddanalytics' };
+    document.querySelectorAll('.cockpit-tabs__item').forEach(el => {
+      el.addEventListener('click', () => {
+        el.parentElement.querySelectorAll('.active').forEach(s => s.classList.remove('active'));
+        el.classList.add('active');
+        const targetId = tabPanels[el.textContent.trim()];
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        if (targetId) document.getElementById(targetId).classList.add('active');
+        document.getElementById('filters-export').style.display = (targetId === 'panel-ddanalytics') ? '' : 'none';
       });
     });
 
