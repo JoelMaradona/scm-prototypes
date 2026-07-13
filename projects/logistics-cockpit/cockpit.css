@@ -487,6 +487,16 @@
   padding: 2px var(--space-3); border-radius: var(--radius-full); white-space: nowrap;
 }
 
+/* ===== Recommended action cards ===== */
+.action-card { border: 1px solid var(--mds-neutral-weak-border); border-radius: var(--radius-lg); padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-3); }
+.action-card__head { display: flex; align-items: center; gap: var(--space-3); }
+.action-card__head .drawer__section-icon svg { fill: none; stroke: var(--cockpit-blue); stroke-width: 1.6; }
+.action-card__title { flex: 1; font-family: var(--font-text); font-weight: 500; font-size: 16px; color: var(--mds-neutral-text); }
+.action-card__desc { font-size: 14px; line-height: 20px; color: var(--mds-neutral-weakest-text); }
+.action-card__list { margin: 0; padding-left: var(--space-4); font-size: 14px; color: var(--mds-neutral-weakest-text); display: flex; flex-direction: column; gap: 2px; }
+.tag--blue { background: var(--mds-secondary-weak-bg); color: var(--cockpit-blue); }
+.drawer__panel .vtip__banner { margin-bottom: 0; }
+
 /* ===== Recommended actions: empty state + help block ===== */
 .drawer__empty { text-align: center; padding: var(--space-8) var(--space-6) var(--space-6); }
 .drawer__empty-icon {
