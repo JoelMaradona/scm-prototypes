@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="../../shared/tokens.css" />
   <link rel="stylesheet" href="../../shared/shell.css" />
   <link rel="stylesheet" href="cockpit.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
 <body>
 
@@ -120,8 +121,8 @@
           <span class="ship-toolbar__spacer"></span>
           <div class="segmented">
             <span class="segmented__item active">All</span>
-            <span class="segmented__item">Disruptions</span>
-            <span class="segmented__item">Delays</span>
+            <span class="segmented__item segmented__item--amber">Disruptions</span>
+            <span class="segmented__item segmented__item--red">Delays</span>
           </div>
           <div class="dd-select" id="dd-key-select">
             <button class="pill-btn" data-dd-toggle><svg viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg> <span class="dd-select__label">Containers</span> <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
@@ -140,7 +141,7 @@
         </div>
 
         <div class="map">
-          <img class="map__img" src="world.svg" alt="World map" />
+          <div class="map__leaflet" id="map-overview" data-bounds="-40,-77,44,122"></div>
           <div class="map__select dd-select" id="dd-layer-select" data-dd-toggle>
             <svg viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5 9-5zM3 13l9 5 9-5M3 17l9 5 9-5"/></svg> <span class="dd-select__label">8 out of 8 selected</span> &#9662;
             <div class="dd-select__menu dd-multiselect__menu">
@@ -158,11 +159,11 @@
           <div class="map__search"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M8.5 3C5.46243 3 3 5.46243 3 8.5C3 11.5376 5.46243 14 8.5 14C10.0189 14 11.3932 13.3849 12.3891 12.3891C13.3849 11.3932 14 10.0189 14 8.5C14 5.46243 11.5376 3 8.5 3ZM2 8.5C2 4.91015 4.91015 2 8.5 2C12.0899 2 15 4.91015 15 8.5C15 10.1148 14.4107 11.5926 13.4362 12.7291L14.75 14.0429L15.2929 13.5C15.6834 13.1095 16.3166 13.1095 16.7071 13.5L22 18.7929C22.3905 19.1834 22.3905 19.8166 22 20.2071L20.2071 22C19.8166 22.3905 19.1834 22.3905 18.7929 22L13.5 16.7071C13.1095 16.3166 13.1095 15.6834 13.5 15.2929L14.0429 14.75L12.7291 13.4362C11.5926 14.4107 10.1148 15 8.5 15C4.91015 15 2 12.0899 2 8.5ZM16 14.2071L14.2071 16L19.5 21.2929L21.2929 19.5L16 14.2071Z"/></svg> Search for vessel, container, order, SKU and more</div>
 
           <!-- pins -->
-          <div class="pin" style="left:27.7%;top:32.1%">
+          <div class="pin" data-lat="34" data-lng="33">
             <div class="pin__badge"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M11.7 2.08619C11.8278 2.02936 11.9662 2 12.1061 2H14.8585C15.0435 2 15.225 2.05135 15.3826 2.14834L21.6415 6H22C22.5523 6 23 6.44772 23 7V10C23 10.5523 22.5523 11 22 11H19V21H22V22H2V21H13V11H7V14H9V15H4V14H6V11H2C1.44772 11 1 10.5523 1 10V7C1 6.44771 1.44772 6 2 6H2.89389L11.7 2.08619ZM5.35611 6H13V3H12.1061L5.35611 6ZM14 3V6H19.7335L14.8585 3H14ZM13 7H2V10H13V7ZM14 10H22V7H14V10ZM14 11V15.1615L18 16.7615V11H14ZM18 17.8385L14 16.2385V21H18V17.8385Z"/></svg><span class="pin__count pin__count--amber">13</span></div>
             <div class="pin__alert">!</div>
           </div>
-          <div class="pin" style="left:38%;top:32%">
+          <div class="pin" data-lat="22" data-lng="-20">
             <div class="pin__badge"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M9.99999 3C9.99999 2.44772 10.4477 2 11 2H13C13.5523 2 14 2.44772 14 3V7H17C17.5523 7 18 7.44772 18 8V13.473L20.5941 14.3377C21.1831 14.534 21.4527 15.2139 21.1584 15.7605L18.365 20.9482C18.0162 21.596 17.3398 22 16.604 22H7.39593C6.66016 22 5.98381 21.596 5.63498 20.9482L2.84158 15.7605C2.54727 15.2139 2.81689 14.534 3.40583 14.3377L5.99999 13.473V8C5.99999 7.44772 6.4477 7 6.99999 7H9.99999V3ZM11 7H13V3H11V7ZM6.99999 13.1396L11.6838 11.5784C11.889 11.5099 12.1109 11.5099 12.3162 11.5784L17 13.1396V8H6.99999V13.1396ZM12 12.527L3.72206 15.2864L6.51546 20.4741C6.68987 20.798 7.02804 21 7.39593 21H16.604C16.9719 21 17.3101 20.798 17.4845 20.4741L20.2779 15.2864L12 12.527Z"/></svg><span class="pin__count pin__count--blue">9</span></div>
             <!-- Scenario 1: hover card — Magleby Mærsk (on time) -->
             <div class="vtip">
@@ -186,10 +187,10 @@
               <a class="vtip__details" href="#" data-open-drawer="drawer-magleby">View details &rsaquo;</a>
             </div>
           </div>
-          <div class="pin" style="left:31.9%;top:46.4%">
+          <div class="pin" data-lat="18.94" data-lng="72.84">
             <div class="pin__badge"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M23 13H18V14.7969C19.1176 15.0023 19.9967 15.8824 20.2021 17H23V13ZM5.5 15.75C4.5335 15.75 3.75 16.5335 3.75 17.5C3.75 18.4665 4.5335 19.25 5.5 19.25C6.4665 19.25 7.25 18.4665 7.25 17.5C7.25 16.5335 6.4665 15.75 5.5 15.75ZM17.5 15.75C16.5335 15.75 15.75 16.5335 15.75 17.5C15.75 18.4665 16.5335 19.25 17.5 19.25C18.4665 19.25 19.25 18.4665 19.25 17.5C19.25 16.5335 18.4665 15.75 17.5 15.75ZM20.7539 8H18V12H23V10.9199L20.7539 8ZM1 6V17H2.79785C3.03316 15.7202 4.15212 14.75 5.5 14.75C6.84788 14.75 7.96684 15.7202 8.20215 17H14.7979C15.0033 15.8824 15.8824 15.0023 17 14.7969V6H1ZM18 7H20.7539C21.0643 7.00003 21.3576 7.14457 21.5469 7.39062L23.793 10.3105C23.9273 10.4853 24 10.6995 24 10.9199V17C24 17.5523 23.5523 18 23 18H20.2021C19.9668 19.2798 18.8479 20.25 17.5 20.25C16.1521 20.25 15.0332 19.2798 14.7979 18H8.20215C7.96684 19.2798 6.84788 20.25 5.5 20.25C4.15212 20.25 3.03316 19.2798 2.79785 18H1C0.447715 18 0 17.5523 0 17V6C0 5.44771 0.447716 5 1 5H17C17.5523 5 18 5.44772 18 6V7Z"/></svg><span class="pin__count pin__count--blue">2</span></div>
           </div>
-          <div class="pin" style="left:60.5%;top:28.7%">
+          <div class="pin" data-lat="11" data-lng="45">
             <div class="pin__badge"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M9.99999 3C9.99999 2.44772 10.4477 2 11 2H13C13.5523 2 14 2.44772 14 3V7H17C17.5523 7 18 7.44772 18 8V13.473L20.5941 14.3377C21.1831 14.534 21.4527 15.2139 21.1584 15.7605L18.365 20.9482C18.0162 21.596 17.3398 22 16.604 22H7.39593C6.66016 22 5.98381 21.596 5.63498 20.9482L2.84158 15.7605C2.54727 15.2139 2.81689 14.534 3.40583 14.3377L5.99999 13.473V8C5.99999 7.44772 6.4477 7 6.99999 7H9.99999V3ZM11 7H13V3H11V7ZM6.99999 13.1396L11.6838 11.5784C11.889 11.5099 12.1109 11.5099 12.3162 11.5784L17 13.1396V8H6.99999V13.1396ZM12 12.527L3.72206 15.2864L6.51546 20.4741C6.68987 20.798 7.02804 21 7.39593 21H16.604C16.9719 21 17.3101 20.798 17.4845 20.4741L20.2779 15.2864L12 12.527Z"/></svg><span class="pin__count pin__count--red">23</span></div>
             <div class="pin__alert">!</div>
             <!-- Scenario 2: hover/click card — MSC Aurora (cargo delayed) -->
@@ -219,7 +220,7 @@
               <a class="vtip__details" href="#" data-open-drawer="drawer-aurora">View details &rsaquo;</a>
             </div>
           </div>
-          <div class="pin pin--flip" style="left:80%;top:31.6%">
+          <div class="pin pin--flip" data-lat="31.23" data-lng="121.47">
             <div class="pin__badge"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M11.7 2.08619C11.8278 2.02936 11.9662 2 12.1061 2H14.8585C15.0435 2 15.225 2.05135 15.3826 2.14834L21.6415 6H22C22.5523 6 23 6.44772 23 7V10C23 10.5523 22.5523 11 22 11H19V21H22V22H2V21H13V11H7V14H9V15H4V14H6V11H2C1.44772 11 1 10.5523 1 10V7C1 6.44771 1.44772 6 2 6H2.89389L11.7 2.08619ZM5.35611 6H13V3H12.1061L5.35611 6ZM14 3V6H19.7335L14.8585 3H14ZM13 7H2V10H13V7ZM14 10H22V7H14V10ZM14 11V15.1615L18 16.7615V11H14ZM18 17.8385L14 16.2385V21H18V17.8385Z"/></svg><span class="pin__count pin__count--red">55</span></div>
             <div class="pin__alert">!</div>
             <!-- Port congestion overlay — Shanghai (only Magleby Mærsk links out; other vessels not yet designed) -->
@@ -256,16 +257,16 @@
               <a class="vtip__details" href="#">View all 55 impacted shipments &rarr;</a>
             </div>
           </div>
-          <div class="pin" style="left:69.5%;top:49%">
+          <div class="pin" data-lat="25" data-lng="128">
             <div class="pin__badge"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M23 13H18V14.7969C19.1176 15.0023 19.9967 15.8824 20.2021 17H23V13ZM5.5 15.75C4.5335 15.75 3.75 16.5335 3.75 17.5C3.75 18.4665 4.5335 19.25 5.5 19.25C6.4665 19.25 7.25 18.4665 7.25 17.5C7.25 16.5335 6.4665 15.75 5.5 15.75ZM17.5 15.75C16.5335 15.75 15.75 16.5335 15.75 17.5C15.75 18.4665 16.5335 19.25 17.5 19.25C18.4665 19.25 19.25 18.4665 19.25 17.5C19.25 16.5335 18.4665 15.75 17.5 15.75ZM20.7539 8H18V12H23V10.9199L20.7539 8ZM1 6V17H2.79785C3.03316 15.7202 4.15212 14.75 5.5 14.75C6.84788 14.75 7.96684 15.7202 8.20215 17H14.7979C15.0033 15.8824 15.8824 15.0023 17 14.7969V6H1ZM18 7H20.7539C21.0643 7.00003 21.3576 7.14457 21.5469 7.39062L23.793 10.3105C23.9273 10.4853 24 10.6995 24 10.9199V17C24 17.5523 23.5523 18 23 18H20.2021C19.9668 19.2798 18.8479 20.25 17.5 20.25C16.1521 20.25 15.0332 19.2798 14.7979 18H8.20215C7.96684 19.2798 6.84788 20.25 5.5 20.25C4.15212 20.25 3.03316 19.2798 2.79785 18H1C0.447715 18 0 17.5523 0 17V6C0 5.44771 0.447716 5 1 5H17C17.5523 5 18 5.44772 18 6V7Z"/></svg><span class="pin__count pin__count--blue">8</span></div>
           </div>
-          <div class="pin" style="left:56.5%;top:75.3%">
+          <div class="pin" data-lat="-2" data-lng="106">
             <div class="pin__badge"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M23 13H18V14.7969C19.1176 15.0023 19.9967 15.8824 20.2021 17H23V13ZM5.5 15.75C4.5335 15.75 3.75 16.5335 3.75 17.5C3.75 18.4665 4.5335 19.25 5.5 19.25C6.4665 19.25 7.25 18.4665 7.25 17.5C7.25 16.5335 6.4665 15.75 5.5 15.75ZM17.5 15.75C16.5335 15.75 15.75 16.5335 15.75 17.5C15.75 18.4665 16.5335 19.25 17.5 19.25C18.4665 19.25 19.25 18.4665 19.25 17.5C19.25 16.5335 18.4665 15.75 17.5 15.75ZM20.7539 8H18V12H23V10.9199L20.7539 8ZM1 6V17H2.79785C3.03316 15.7202 4.15212 14.75 5.5 14.75C6.84788 14.75 7.96684 15.7202 8.20215 17H14.7979C15.0033 15.8824 15.8824 15.0023 17 14.7969V6H1ZM18 7H20.7539C21.0643 7.00003 21.3576 7.14457 21.5469 7.39062L23.793 10.3105C23.9273 10.4853 24 10.6995 24 10.9199V17C24 17.5523 23.5523 18 23 18H20.2021C19.9668 19.2798 18.8479 20.25 17.5 20.25C16.1521 20.25 15.0332 19.2798 14.7979 18H8.20215C7.96684 19.2798 6.84788 20.25 5.5 20.25C4.15212 20.25 3.03316 19.2798 2.79785 18H1C0.447715 18 0 17.5523 0 17V6C0 5.44771 0.447716 5 1 5H17C17.5523 5 18 5.44772 18 6V7Z"/></svg><span class="pin__count pin__count--blue">12</span></div>
           </div>
-          <div class="pin" style="left:47.7%;top:80.9%">
+          <div class="pin" data-lat="1.29" data-lng="103.85">
             <div class="pin__badge"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M23 13H18V14.7969C19.1176 15.0023 19.9967 15.8824 20.2021 17H23V13ZM5.5 15.75C4.5335 15.75 3.75 16.5335 3.75 17.5C3.75 18.4665 4.5335 19.25 5.5 19.25C6.4665 19.25 7.25 18.4665 7.25 17.5C7.25 16.5335 6.4665 15.75 5.5 15.75ZM17.5 15.75C16.5335 15.75 15.75 16.5335 15.75 17.5C15.75 18.4665 16.5335 19.25 17.5 19.25C18.4665 19.25 19.25 18.4665 19.25 17.5C19.25 16.5335 18.4665 15.75 17.5 15.75ZM20.7539 8H18V12H23V10.9199L20.7539 8ZM1 6V17H2.79785C3.03316 15.7202 4.15212 14.75 5.5 14.75C6.84788 14.75 7.96684 15.7202 8.20215 17H14.7979C15.0033 15.8824 15.8824 15.0023 17 14.7969V6H1ZM18 7H20.7539C21.0643 7.00003 21.3576 7.14457 21.5469 7.39062L23.793 10.3105C23.9273 10.4853 24 10.6995 24 10.9199V17C24 17.5523 23.5523 18 23 18H20.2021C19.9668 19.2798 18.8479 20.25 17.5 20.25C16.1521 20.25 15.0332 19.2798 14.7979 18H8.20215C7.96684 19.2798 6.84788 20.25 5.5 20.25C4.15212 20.25 3.03316 19.2798 2.79785 18H1C0.447715 18 0 17.5523 0 17V6C0 5.44771 0.447716 5 1 5H17C17.5523 5 18 5.44772 18 6V7Z"/></svg><span class="pin__count pin__count--blue">32</span></div>
           </div>
-          <div class="pin" style="left:49%;top:68%">
+          <div class="pin" data-lat="-22" data-lng="10">
             <div class="pin__badge"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M9.99999 3C9.99999 2.44772 10.4477 2 11 2H13C13.5523 2 14 2.44772 14 3V7H17C17.5523 7 18 7.44772 18 8V13.473L20.5941 14.3377C21.1831 14.534 21.4527 15.2139 21.1584 15.7605L18.365 20.9482C18.0162 21.596 17.3398 22 16.604 22H7.39593C6.66016 22 5.98381 21.596 5.63498 20.9482L2.84158 15.7605C2.54727 15.2139 2.81689 14.534 3.40583 14.3377L5.99999 13.473V8C5.99999 7.44772 6.4477 7 6.99999 7H9.99999V3ZM11 7H13V3H11V7ZM6.99999 13.1396L11.6838 11.5784C11.889 11.5099 12.1109 11.5099 12.3162 11.5784L17 13.1396V8H6.99999V13.1396ZM12 12.527L3.72206 15.2864L6.51546 20.4741C6.68987 20.798 7.02804 21 7.39593 21H16.604C16.9719 21 17.3101 20.798 17.4845 20.4741L20.2779 15.2864L12 12.527Z"/></svg><span class="pin__count pin__count--amber">14</span></div>
             <div class="pin__alert">!</div>
             <!-- Scenario 3: hover/click card — OOCL Tianjin (at risk) -->
@@ -294,12 +295,6 @@
               <div class="vtip__divider"></div>
               <a class="vtip__details" href="#" data-open-drawer="drawer-tianjin">View details &rsaquo;</a>
             </div>
-          </div>
-
-          <div class="map__controls">
-            <button><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
-            <button><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button>
-            <button><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></button>
           </div>
         </div>
 
@@ -679,27 +674,22 @@
           </div>
 
           <div class="map">
-            <img class="map__img" src="world.svg" alt="World map" />
+            <div class="map__leaflet" id="map-ddops" data-bounds="-28,-128,58,139"></div>
             <div class="map__search"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M8.5 3C5.46243 3 3 5.46243 3 8.5C3 11.5376 5.46243 14 8.5 14C10.0189 14 11.3932 13.3849 12.3891 12.3891C13.3849 11.3932 14 10.0189 14 8.5C14 5.46243 11.5376 3 8.5 3ZM2 8.5C2 4.91015 4.91015 2 8.5 2C12.0899 2 15 4.91015 15 8.5C15 10.1148 14.4107 11.5926 13.4362 12.7291L14.75 14.0429L15.2929 13.5C15.6834 13.1095 16.3166 13.1095 16.7071 13.5L22 18.7929C22.3905 19.1834 22.3905 19.8166 22 20.2071L20.2071 22C19.8166 22.3905 19.1834 22.3905 18.7929 22L13.5 16.7071C13.1095 16.3166 13.1095 15.6834 13.5 15.2929L14.0429 14.75L12.7291 13.4362C11.5926 14.4107 10.1148 15 8.5 15C4.91015 15 2 12.0899 2 8.5ZM16 14.2071L14.2071 16L19.5 21.2929L21.2929 19.5L16 14.2071Z"/></svg> Search for country, port, container, and more</div>
 
             <!-- D&D pins: donut-ring style (red=incurring, amber=at risk, green=within free time, gray=other) -->
-            <div class="dd-pin" style="left:49.7%;top:28.6%"><div class="dd-pin__shape"><div class="dd-pin__ring"></div><span class="dd-pin__count">49</span></div></div>
-            <div class="dd-pin" style="left:15%;top:44.1%"><div class="dd-pin__shape"><div class="dd-pin__ring"></div><span class="dd-pin__count">24</span></div></div>
-            <div class="dd-pin" style="left:26.2%;top:50.3%"><div class="dd-pin__shape"><div class="dd-pin__ring"></div><span class="dd-pin__count">19</span></div></div>
-            <div class="dd-pin" style="left:68.8%;top:57.5%"><div class="dd-pin__shape"><div class="dd-pin__ring"></div><span class="dd-pin__count">38</span></div></div>
-            <div class="dd-pin" style="left:81.9%;top:49.5%"><div class="dd-pin__shape"><div class="dd-pin__ring"></div><span class="dd-pin__count">61</span></div></div>
-            <div class="dd-pin" style="left:31%;top:38%"><div class="dd-pin__shape"><div class="dd-pin__ring"></div><span class="dd-pin__count">15</span></div></div>
-            <div class="dd-pin" style="left:41%;top:36%"><div class="dd-pin__shape"><div class="dd-pin__ring"></div><span class="dd-pin__count">22</span></div></div>
-            <div class="dd-pin" style="left:23%;top:63%"><div class="dd-pin__shape"><div class="dd-pin__ring"></div><span class="dd-pin__count">33</span></div></div>
-            <div class="dd-pin" style="left:52%;top:73%"><div class="dd-pin__shape"><div class="dd-pin__ring"></div><span class="dd-pin__count">27</span></div></div>
-            <div class="dd-pin" style="left:71%;top:46%"><div class="dd-pin__shape"><div class="dd-pin__ring"></div><span class="dd-pin__count">44</span></div></div>
-            <div class="dd-pin" style="left:85%;top:66%"><div class="dd-pin__shape"><div class="dd-pin__ring"></div><span class="dd-pin__count">18</span></div></div>
+            <div class="dd-pin" data-lat="51.92" data-lng="4.48"><div class="dd-pin__shape"><div class="dd-pin__ring"></div><span class="dd-pin__count">49</span></div></div>
+            <div class="dd-pin" data-lat="53.55" data-lng="9.99"><div class="dd-pin__shape"><div class="dd-pin__ring"></div><span class="dd-pin__count">24</span></div></div>
+            <div class="dd-pin" data-lat="36.13" data-lng="-5.45"><div class="dd-pin__shape"><div class="dd-pin__ring"></div><span class="dd-pin__count">19</span></div></div>
+            <div class="dd-pin" data-lat="25.01" data-lng="55.06"><div class="dd-pin__shape"><div class="dd-pin__ring"></div><span class="dd-pin__count">38</span></div></div>
+            <div class="dd-pin" data-lat="18.94" data-lng="72.84"><div class="dd-pin__shape"><div class="dd-pin__ring"></div><span class="dd-pin__count">61</span></div></div>
+            <div class="dd-pin" data-lat="6.93" data-lng="79.85"><div class="dd-pin__shape"><div class="dd-pin__ring"></div><span class="dd-pin__count">15</span></div></div>
+            <div class="dd-pin" data-lat="1.29" data-lng="103.85"><div class="dd-pin__shape"><div class="dd-pin__ring"></div><span class="dd-pin__count">22</span></div></div>
+            <div class="dd-pin" data-lat="31.23" data-lng="121.47"><div class="dd-pin__shape"><div class="dd-pin__ring"></div><span class="dd-pin__count">33</span></div></div>
+            <div class="dd-pin" data-lat="35.18" data-lng="129.08"><div class="dd-pin__shape"><div class="dd-pin__ring"></div><span class="dd-pin__count">27</span></div></div>
+            <div class="dd-pin" data-lat="33.75" data-lng="-118.2"><div class="dd-pin__shape"><div class="dd-pin__ring"></div><span class="dd-pin__count">44</span></div></div>
+            <div class="dd-pin" data-lat="-23.96" data-lng="-46.33"><div class="dd-pin__shape"><div class="dd-pin__ring"></div><span class="dd-pin__count">18</span></div></div>
 
-            <div class="map__controls">
-              <button><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
-              <button><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button>
-              <button><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></button>
-            </div>
           </div>
         </section>
 
@@ -1887,7 +1877,79 @@
   </script>
 
   <script src="../../shared/shell.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
+    // Real interactive map: Leaflet + OpenStreetMap tiles (free, no key, no build step).
+    // Each .pin / .dd-pin keeps its exact existing markup and CSS — we just lift it out of the
+    // static HTML, drop it into a Leaflet divIcon at its real lat/lng, and let Leaflet place it.
+    // This must run before anything below that queries `.map .pin`, since it's what creates
+    // that DOM (the originals are removed once their marker is added).
+    // Each map's data-bounds (set in its HTML) is fit tight around just that map's own pins, with
+    // a bit of padding — pre-computed per map so the pins take centre stage. .map's CSS is a very
+    // wide/short box (same proportions as the old world.svg widget), so fitBounds will naturally
+    // pick a zoom that fills the height on the pins' latitude range and show extra ocean sideways
+    // — that's fine, it's showing more map (never a blank gap), and keeps every pin comfortably
+    // clear of the top/bottom edge instead of cropped or crowded.
+    function fitHome(map, bounds) {
+      map.fitBounds(bounds, { animate: false });
+      // fitBounds fits exactly to the box, which any sub-pixel rounding can turn into a hairline
+      // gap on one edge; zooming in a hair beyond the exact fit guarantees a slight overscan/crop
+      // instead, so there's never a blank strip down either side.
+      map.setZoom(map.getZoom() + 0.05, { animate: false });
+    }
+    function invalidateMapsIn(root) {
+      root.querySelectorAll('.map__leaflet').forEach(c => {
+        if (!c._leafletMap) return;
+        c._leafletMap.invalidateSize();
+        // A map first shown while its tab/list-toggle was hidden (display:none, zero size) computed
+        // its fitBounds zoom against that zero size — re-fit now that it has real dimensions.
+        fitHome(c._leafletMap, c._homeBounds);
+      });
+    }
+    // Re-fit on any viewport/window resize (narrower screens, browser resize, orientation change)
+    // so pins never end up clipped at a size other than the one the page happened to load at.
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => invalidateMapsIn(document), 150);
+    });
+    // Static map: real basemap + real pin positions, but no pan/zoom — this is a reference map,
+    // not a navigable one, so all interaction handlers are switched off and there are no zoom controls.
+    document.querySelectorAll('.map__leaflet').forEach(container => {
+      const mapEl = container.closest('.map');
+      const map = L.map(container, {
+        zoomControl: false, attributionControl: true, zoomSnap: 0.05,
+        dragging: false, touchZoom: false, scrollWheelZoom: false,
+        doubleClickZoom: false, boxZoom: false, keyboard: false, tap: false
+      });
+      const [latLo, lngLo, latHi, lngHi] = container.dataset.bounds.split(',').map(Number);
+      const bounds = [[latLo, lngLo], [latHi, lngHi]];
+      fitHome(map, bounds);
+      // CARTO Positron: free, no key — light grey countries + labelled place/ocean names,
+      // matching the clean Figma basemap instead of OSM's busy default raster style.
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        maxZoom: 18, noWrap: true, subdomains: 'abcd',
+        attribution: '&copy; <a href="https://carto.com/attributions">CARTO</a>, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+      container._leafletMap = map;
+      container._homeBounds = bounds;
+
+      mapEl.querySelectorAll(':scope > .pin, :scope > .dd-pin').forEach(pin => {
+        const lat = parseFloat(pin.dataset.lat), lng = parseFloat(pin.dataset.lng);
+        if (isNaN(lat) || isNaN(lng)) return;
+        const icon = L.divIcon({
+          html: `<div class="${pin.className}">${pin.innerHTML}</div>`,
+          className: 'pin-icon-wrap', iconSize: null, iconAnchor: [0, 0]
+        });
+        const marker = L.marker([lat, lng], { icon }).addTo(map);
+        // Leaflet z-orders markers by latitude (further "south" = drawn on top) so an open
+        // vessel/port card can end up buried under a later marker; stash the marker so the
+        // click handler below can lift it to the very front while its card is open.
+        marker.getElement().querySelector('.pin, .dd-pin')._leafletMarker = marker;
+        pin.remove();
+      });
+    });
+
     // local tab + segmented + toggle switching (shared shell.js only knows .tab-bar / .nav-item)
     document.querySelectorAll('.segmented__item, .toggle-group__item').forEach(el => {
       el.addEventListener('click', () => {
@@ -1903,6 +1965,7 @@
         } else if (el.dataset.view === 'map' || el.dataset.view === 'dd-map') {
           mapEl.classList.remove('hidden');
           listEl.classList.remove('active');
+          invalidateMapsIn(mapEl); // Leaflet needs a nudge after being hidden (display:none => zero size)
         }
       });
     });
@@ -1980,24 +2043,60 @@
         el.classList.add('active');
         const targetId = tabPanels[el.textContent.trim()];
         document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-        if (targetId) document.getElementById(targetId).classList.add('active');
+        if (targetId) {
+          const panel = document.getElementById(targetId);
+          panel.classList.add('active');
+          invalidateMapsIn(panel); // Leaflet needs a nudge after being hidden (display:none => zero size)
+        }
         document.getElementById('filters-export').style.display = (targetId === 'panel-ddanalytics') ? '' : 'none';
       });
     });
 
     // Map pins: click opens the vessel card as an overlay; click outside closes it.
+    // Leaflet z-orders markers by latitude, so a later marker can render on top of an earlier
+    // one's open card; lift the open pin's actual marker (via setZIndexOffset) above the rest.
+    // The card's horizontal side and vertical offset are computed fresh on every open (not fixed
+    // in CSS) so it never runs past the map's edge, regardless of where the pin ends up sitting.
+    function resetVtip(p) {
+      p.classList.remove('open');
+      if (p._leafletMarker) p._leafletMarker.setZIndexOffset(0);
+      const v = p.querySelector('.vtip');
+      if (v) { v.style.top = ''; v.style.transform = ''; }
+    }
+    function positionVtip(pin, vtip) {
+      const mapEl = pin.closest('.map');
+      const pinRect = pin.getBoundingClientRect();
+      const mapRect = mapEl.getBoundingClientRect();
+      const PAD = 12;
+
+      const opensRight = pinRect.right + 14 + vtip.offsetWidth <= mapRect.right - PAD;
+      pin.classList.toggle('pin--flip', !opensRight);
+
+      const vtipHeight = vtip.offsetHeight;
+      const pinCenterY = pinRect.top + pinRect.height / 2;
+      const minTop = mapRect.top + PAD;
+      const maxTop = mapRect.bottom - PAD - vtipHeight;
+      const desiredTop = Math.max(minTop, Math.min(pinCenterY - vtipHeight / 2, maxTop));
+      vtip.style.top = (desiredTop - pinRect.top) + 'px';
+      vtip.style.transform = 'scale(1)';
+    }
     document.querySelectorAll('.map .pin').forEach(pin => {
-      if (!pin.querySelector('.vtip')) return;
+      const vtip = pin.querySelector('.vtip');
+      if (!vtip) return;
       pin.addEventListener('click', e => {
         e.stopPropagation();
         const wasOpen = pin.classList.contains('open');
-        document.querySelectorAll('.pin.open').forEach(p => p.classList.remove('open'));
-        if (!wasOpen) pin.classList.add('open');
+        document.querySelectorAll('.pin.open').forEach(resetVtip);
+        if (!wasOpen) {
+          pin.classList.add('open');
+          if (pin._leafletMarker) pin._leafletMarker.setZIndexOffset(10000);
+          positionVtip(pin, vtip);
+        }
       });
-      pin.querySelector('.vtip').addEventListener('click', e => e.stopPropagation());
+      vtip.addEventListener('click', e => e.stopPropagation());
     });
     document.addEventListener('click', () => {
-      document.querySelectorAll('.pin.open').forEach(p => p.classList.remove('open'));
+      document.querySelectorAll('.pin.open').forEach(resetVtip);
     });
 
     // Drawer tabs (Overview / Recommended actions): swap the matching panel

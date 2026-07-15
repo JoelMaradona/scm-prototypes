@@ -217,6 +217,9 @@
   cursor: pointer;
 }
 .segmented__item.active { background: var(--scp-blue-bg); color: var(--scp-blue-text); }
+/* Disruptions / Delays active states match the Alerts & exceptions widget's own tag colours. */
+.segmented__item--amber.active { background: var(--scp-amber-bg); color: var(--scp-amber-text); }
+.segmented__item--red.active { background: var(--scp-red-bg); color: var(--scp-red-text); }
 .pill-btn {
   display: inline-flex;
   align-items: center;
@@ -270,12 +273,32 @@
 .map.hidden { display: none; }
 .map {
   position: relative;
-  aspect-ratio: 4378.13 / 1363.57;  /* world.svg's ratio with height trimmed ~44% total -> object-fit:cover crops poles, no stretch */
+  aspect-ratio: 4378.13 / 1363.57;  /* same proportions as the old world.svg widget */
   background: #DCEBF6;
   overflow: visible;      /* let click-open vessel cards overflow the map bounds */
   border-radius: 0 0 var(--radius-xl) var(--radius-xl);
 }
-.map__img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 0 0 var(--radius-xl) var(--radius-xl); }
+.map__leaflet {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+  background: #A9D6F0;
+  z-index: 0;
+}
+.map__select, .map__search { z-index: 1; }
+/* Leaflet clips its container on purpose (it pre-renders a tile buffer just past the visible
+   edge for smooth panning) — do NOT override this to overflow:visible, it un-clips that buffer
+   too and the tile layer spills far past the widget. .pin--flip is the existing mechanism for
+   keeping a vessel/port card (.vtip) from clipping when its pin sits near the edge. */
+.map__leaflet.leaflet-container { font: inherit; }
+/* CARTO's ocean/land tiles are barely-tinted grey/cream (very low saturation, not actually grey
+   hue-wise) — mix-blend-mode couldn't reach them (Leaflet's tile pane sits inside a transformed
+   ancestor pane that traps the blend in its own stacking context before it hits this element's
+   background), so boost the tiles' own existing saturation directly instead: their native cool
+   grey-blue ocean hue becomes a clear blue, their warm cream land hue becomes a visible parchment
+   tone, without recolouring anything artificially. Only the tile pane — pins/tooltips are a
+   separate Leaflet pane, untouched by this filter. Verified visually via headless screenshot. */
+.map__leaflet .leaflet-tile-pane { filter: saturate(5); }
+.map__leaflet .leaflet-marker-icon { background: none; border: none; }
 .map__search {
   position: absolute; top: var(--space-4); right: var(--space-4);
   width: 400px; max-width: 42%;
@@ -293,17 +316,6 @@
   box-shadow: var(--card-shadow);
 }
 .map__select svg { width: 16px; height: 16px; stroke: var(--mds-neutral-text); fill: none; stroke-width: 1.5; }
-.map__controls {
-  position: absolute; right: var(--space-4); bottom: var(--space-4);
-  display: flex; flex-direction: column; gap: 6px;
-}
-.map__controls button {
-  width: 34px; height: 34px; border: none; border-radius: var(--radius-md);
-  background: white; box-shadow: var(--card-shadow); cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  color: var(--mds-neutral-weak-text); font-size: 18px;
-}
-.map__controls button svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.6; }
 
 /* Map pins */
 .pin {
