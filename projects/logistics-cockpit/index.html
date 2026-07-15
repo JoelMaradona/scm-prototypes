@@ -2061,20 +2061,49 @@
       p.classList.remove('open');
       if (p._leafletMarker) p._leafletMarker.setZIndexOffset(0);
       const v = p.querySelector('.vtip');
-      if (v) { v.style.top = ''; v.style.transform = ''; }
+      if (v) { v.style.top = ''; v.style.transform = ''; v.style.maxHeight = ''; }
+    }
+    // Every vtip ends in the same divider + CTA-link pair (View details / View all N impacted
+    // shipments). That pair must NEVER end up inside a scrolled-away area — a demo presenter could
+    // easily miss it. Split the card once into a scrollable body (everything above the pair) and a
+    // fixed footer (the pair itself), so only the body ever scrolls.
+    function ensureScrollWrapper(vtip) {
+      let wrapper = vtip.querySelector(':scope > .vtip__scroll');
+      if (wrapper) return wrapper;
+      const children = Array.from(vtip.children);
+      const bodyChildren = children.slice(0, children.length - 2); // all but divider + CTA link
+      wrapper = document.createElement('div');
+      wrapper.className = 'vtip__scroll';
+      bodyChildren.forEach(c => wrapper.appendChild(c));
+      vtip.insertBefore(wrapper, vtip.firstChild);
+      vtip.classList.add('vtip--scrollable');
+      return wrapper;
     }
     function positionVtip(pin, vtip) {
       const mapEl = pin.closest('.map');
       const pinRect = pin.getBoundingClientRect();
       const mapRect = mapEl.getBoundingClientRect();
       const PAD = 12;
+      // The search box and layer dropdown float on top of the map in its own top strip — clamping
+      // only to the map's own edges let cards ride up underneath and cover them. Keep clear of it
+      // regardless of which horizontal side the card opens on, since both float across that strip.
+      const TOP_UI_CLEARANCE = 64;
 
       const opensRight = pinRect.right + 14 + vtip.offsetWidth <= mapRect.right - PAD;
       pin.classList.toggle('pin--flip', !opensRight);
 
+      // On a narrow screen the map itself is short (its height is width-proportional), and a tall
+      // card (e.g. the Shanghai port-congestion card) can be taller than the map has room for no
+      // matter where it's positioned. Cap the card's total height and let only its body (never the
+      // divider+CTA footer) scroll internally as a last resort, rather than ever visually overflow
+      // the map's edge — repositioning alone can't create space that isn't there.
+      const availableHeight = mapRect.height - TOP_UI_CLEARANCE - PAD;
+      ensureScrollWrapper(vtip);
+      vtip.style.maxHeight = availableHeight + 'px';
+
       const vtipHeight = vtip.offsetHeight;
       const pinCenterY = pinRect.top + pinRect.height / 2;
-      const minTop = mapRect.top + PAD;
+      const minTop = mapRect.top + TOP_UI_CLEARANCE;
       const maxTop = mapRect.bottom - PAD - vtipHeight;
       const desiredTop = Math.max(minTop, Math.min(pinCenterY - vtipHeight / 2, maxTop));
       vtip.style.top = (desiredTop - pinRect.top) + 'px';

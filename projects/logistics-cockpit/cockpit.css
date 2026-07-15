@@ -273,7 +273,10 @@
 .map.hidden { display: none; }
 .map {
   position: relative;
-  aspect-ratio: 4378.13 / 1363.57;  /* same proportions as the old world.svg widget */
+  width: 100%;   /* pin width explicitly — without it, aspect-ratio + min-height below solves for
+                    a WIDER box instead of a taller one on narrow screens, overflowing the page */
+  aspect-ratio: 4378.13 / 1527.2;  /* ~12% taller than the old world.svg widget — extra headroom so tall vessel/port cards have room to breathe */
+  min-height: 460px;  /* floor so narrow screens don't shrink the map shorter than a tall vessel/port card needs */
   background: #DCEBF6;
   overflow: visible;      /* let click-open vessel cards overflow the map bounds */
   border-radius: 0 0 var(--radius-xl) var(--radius-xl);
@@ -367,6 +370,11 @@
   transition: opacity 0.12s ease, transform 0.12s ease;
 }
 .pin.open .vtip { opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(-50%) scale(1); }
+/* When a card is too tall for the map (narrow screens), only the body above the divider+CTA
+   scrolls — the "View details"/"View all" link must never be scrollable-away where a demo
+   presenter could miss it. See positionVtip() in the page script, which builds .vtip__scroll. */
+.vtip.vtip--scrollable { display: flex; flex-direction: column; }
+.vtip__scroll { overflow-y: auto; flex: 1 1 auto; min-height: 0; }
 .vtip__caret {
   position: absolute; left: -7px; top: 50%; transform: translateY(-50%);
   width: 0; height: 0;
